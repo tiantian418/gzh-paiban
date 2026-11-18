@@ -116,7 +116,7 @@
       box-shadow: 0 4px 14px rgba(124, 92, 255, .32)
     }
 
-    /* ---------- 栏目切换（顶栏常驻：夜读 / 热搜 / 科普） ---------- */
+    /* ---------- 栏目切换（顶栏常驻：夜读 / 热搜 / 科普 / 带货） ---------- */
     .chan-switch {
       display: flex;
       align-items: center;
@@ -190,6 +190,11 @@
       background: #fff;
       border-bottom: 1px solid var(--line);
       flex-shrink: 0;
+      /* 栏目卡加到第五张（财税）后，一行放不下会把字号滑杆顶出屏幕；
+         这里允许换行 —— 宁可多一行，也别让人以为没有字号滑杆。
+         滚动条本身是隐藏的（下面 height:0），不换行就等于看不见。 */
+      flex-wrap: wrap;
+      row-gap: 6px;
       overflow-x: auto
     }
 
@@ -249,7 +254,8 @@
     }
 
     .pane.left {
-      border-right: 1px solid var(--line)
+      border-right: 1px solid var(--line);
+      position: relative /* 分割线样式面板要相对它定位 */
     }
 
     .pane-head {
@@ -308,6 +314,115 @@
     .fmt-btn.fmt-txt {
       padding: 0 10px;
       color: var(--sub)
+    }
+
+    /* 图片 / 表格按钮：跟 B / I / U 同一枚按钮，只是语气弱一点（它们是「放东西」，不是「改字」），
+       前面加一道细竖线，和左边的行内格式分开一组 */
+    .fmt-btn.fmt-ico {
+      padding: 0 9px;
+      color: var(--sub)
+    }
+
+    .fmt-sep {
+      width: 1px;
+      height: 15px;
+      background: #e3deee;
+      margin: 0 3px;
+      flex-shrink: 0
+    }
+
+    /* ---------- 分割线样式面板（点「— 分割线」弹出） ---------- */
+    .hr-pop {
+      display: none;
+      position: absolute;
+      z-index: 60;
+      width: 236px;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 10px 28px rgba(58, 44, 102, .16)
+    }
+
+    .hr-pop.on {
+      display: block
+    }
+
+    .hr-pop-t {
+      font-size: 11.5px;
+      line-height: 1.6;
+      color: #8b8397;
+      margin: 0 0 8px 2px
+    }
+
+    .hr-pop-t code {
+      background: #eae5fa;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-size: 11px
+    }
+
+    /* 每一档：左边一条真实的线型预览，右边名字 */
+    .hr-opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 7px 8px;
+      border: 1px solid transparent;
+      background: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left
+    }
+
+    .hr-opt:hover {
+      background: #f7f4ff
+    }
+
+    .hr-opt.on {
+      background: #f3efff;
+      border-color: #d8ccfb
+    }
+
+    .hr-demo {
+      width: 70px;
+      flex: none;
+      display: flex;
+      align-items: center
+    }
+
+    .hr-demo i {
+      display: block;
+      width: 100%
+    }
+
+    .hr-name {
+      font-size: 12.5px;
+      color: #4a4358
+    }
+
+    .hr-opt.on .hr-name {
+      color: var(--brand1);
+      font-weight: 600
+    }
+
+    .hr-insert {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      background: var(--brand1);
+      color: #fff;
+      font-size: 12.5px;
+      font-family: inherit;
+      cursor: pointer
+    }
+
+    .hr-insert:hover {
+      filter: brightness(1.06)
     }
 
     .fmt-hint {
@@ -494,6 +609,58 @@
       font-style: normal;
       color: #35a06a;
       font-weight: 600
+    }
+
+    /* 二维码归属切换：通用 + 五个栏目，点哪个就编哪个槽 */
+    .qr-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px
+    }
+
+    .qr-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 12px;
+      color: var(--sub);
+      cursor: pointer;
+      transition: .16s
+    }
+
+    .qr-tab:hover {
+      border-color: #b9a8f7;
+      color: var(--brand1)
+    }
+
+    .qr-tab.on {
+      background: #f3efff;
+      border-color: #c9baf8;
+      color: var(--brand1);
+      font-weight: 600
+    }
+
+    /* 每个槽前面那颗小圆点，用栏目的主色，跟顶栏的栏目按钮对上 */
+    .qr-tab i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex: none;
+      background: #cfc9dc
+    }
+
+    /* 绿勾 = 这个槽自己存过图（没勾 = 现在跟着通用那张走） */
+    .qr-tab em {
+      font-style: normal;
+      color: #35a06a;
+      font-weight: 700;
+      font-size: 11px
     }
 
     .frag-tip code {
@@ -979,10 +1146,12 @@
           <span id="stat">约 0 字 · 读完约 1 分钟</span>
           <div class="spacer" style="flex:1"></div>
           <button class="mini on" id="syncBtn" onclick="toggleSync()" title="两边滚动位置互相跟随">同步滚动</button>
+          <input type="file" id="picFile" accept="image/*" multiple style="display:none" onchange="insertPics(event)">
           <button class="mini" onclick="loadSample()">插入示例</button>
           <button class="mini" onclick="relayoutSkeleton()" title="按最新版重新铺这个栏目的架构（老骨架 / 想重来的时候用）">重铺架构</button>
         </div>
         <div class="fmt-row" id="fmtRow"></div>
+        <div class="hr-pop" id="hrPop"></div>
 
         <textarea id="editor" spellcheck="false" placeholder="# 在这里写标题
 
@@ -999,6 +1168,8 @@
 
             1. 有序列表
             2. 第二项
+
+            --- （单独一行 = 分割线，线型在工具条「— 分割线」里挑）
 
             ```js
             console.log('支持代码块');
@@ -1046,22 +1217,26 @@
       <h3>怎么用这个工具发公众号</h3>
       <h4>推荐流程（每篇 5 分钟）</h4>
       <ol>
-        <li>顶栏左侧点 <b>夜读 / 热搜 / 科普</b> 选栏目：写过就接上那篇，没写过就自动铺好该栏目的整篇架构</li>
-        <li>把 <b>## 01 / 02 / 03</b> 下的占位文字换成正文（刊头关键词、引言、结尾）</li>
+        <li>顶栏左侧点 <b>夜读 / 热搜 / 科普 / 带货 / 财税</b> 选栏目：写过就接上那篇，没写过就自动铺好该栏目的整篇架构</li>
+        <li>把 <b>## 01 / 02 / 03</b> 下的占位文字换成正文（引言、正文、结尾）</li>
         <li>点右上角 <b>复制到公众号</b> → 后台新建图文 → <b>Ctrl+V</b></li>
       </ol>
       <h4>① 写好内容</h4>
-      <p>左边写 Markdown，右边实时预览，草稿自动存浏览器本地。图片可直接 <code>Ctrl+V</code> 粘贴。<br>
-        <b>夜读 / 热搜 / 科普各存一份草稿</b>（正文 + 标题样式 + 引用样式 + 行距 + 字号 + 预览宽度一起记）：
-        写到一半切去热搜，热搜那边还是上次的热搜稿；切回夜读，夜读这边原样回来，三边互不覆盖。<br>
+      <p>左边写 Markdown，右边实时预览，草稿自动存浏览器本地。图片有三条路：<code>Ctrl+V</code> 粘贴、
+        点格式工具条里的 <b>＋ 图片</b> 选文件（可多选）、或者直接把图<b>拖进编辑区</b> ——
+        后两条会自动压成 1080px 宽的 JPEG 再插到光标处，一张照片两百来 KB，草稿存得下十几张。
+        同一排右边的 <b>＋ 表格</b> 插一个 3×3 的空表，比较缴费比例、税率档位这种地方比手敲竖线快。<br>
+        <b>夜读 / 热搜 / 科普 / 带货 / 财税各存一份草稿</b>（正文 + 标题样式 + 引用样式 + 行距 + 字号 + 预览宽度一起记）：
+        写到一半切去热搜，热搜那边还是上次的热搜稿；切回夜读，夜读这边原样回来，五边互不覆盖。<br>
         <b>栏目在顶栏左侧，不用进任何菜单</b>：点「热搜」就接上上次那篇热搜稿，点「夜读」就接回夜读稿。
         鼠标悬停在栏目上能看到它上次存稿的时间。<b>还没写过的栏目</b>会自动铺好它的整篇架构
-        （刊头 → 引言 → 01/02/03 → 写到最后 → 点赞 → 关注卡），当前这篇已经先存回它自己的栏目，不会丢。<br>
-        <b>三栏目版式完全一样</b>（刊头 → 引言 → 01/02/03 → 写到最后 → 点赞 → 关注卡，
-        组件尺寸也是同一套），差别只在配色 —— 所以三个栏目写起来手感一致，切过去版面不动、只有颜色换。<br>
+        （引言 → 01/02/03 → 写到最后 → 点赞 → 关注卡），当前这篇已经先存回它自己的栏目，不会丢。<br>
+        <b>五栏目版式完全一样</b>（引言 → 01/02/03 → 写到最后 → 点赞 → 关注卡，
+        组件尺寸也是同一套），差别只在配色 —— 所以五个栏目写起来手感一致，切过去版面不动、只有颜色换。
+        唯一多出来的是<b>带货</b>：它在 03 后面自带一张<b>商品卡 + 购买引导</b>，其余结构一样。<br>
         关工具再打开，也回到上次停的那个栏目。<br>
         <b>打开一定有东西看</b>：回到上次停的那个栏目 —— 那个栏目写过，就把那篇原样摆回来；
-        没写过，就铺好它自己的整篇架构。三个栏目各自都有一套完整架构，所以不会出现空白页。<br>
+        没写过，就铺好它自己的整篇架构。四个栏目各自都有一套完整架构，所以不会出现空白页。<br>
         <b>「插入示例」只是给你看版式</b>，不会被记成存稿；<b>骨架也不算存稿</b>——
         不管是今天铺的、还是老版本留下来的老骨架，只要里面没有你写的正文，切栏目时都会照常铺最新架构。<br>
         <b>想推倒重来点「重铺架构」</b>（在编辑器上方、「插入示例」右边）：把当前栏目按最新版重新铺一遍。
@@ -1070,20 +1245,25 @@
         <code>## 01 第一个小标题</code> 补成管道式（带英文小字字段）—— 只认原样没改过的默认文案，
         你自己改过的句子一个字不动。<br>
         <b>基础格式有按钮</b>：选中文字，点编辑器上方的 <b>B / I / U / S / 高亮 / &lt;/&gt; / 链接</b> 直接套上，<b>再点一下取消</b>；
+        同一排右边还有 <b>＋ 图片 / ＋ 表格 / — 分割线</b> 三个插入按钮，都是往正文里放东西。
         快捷键 <code>Ctrl+B</code> 加粗、<code>Ctrl+I</code> 斜体、<code>Ctrl+U</code> 下划线。
         手写 Markdown 也照旧：<code>**粗体**</code>、<code>*斜体*</code>、<code>++下划线++</code>、<code>~~删除线~~</code>、<code>==高亮==</code>、<code>`行内代码`</code>。
       </p>
       <h4>② 选主题 / 标题样式</h4>
-      <p>顶部主题卡片只有<b>三张</b>，对应三个栏目：<b>夜读深蓝</b>（米色 + 深蓝 + 金）、
-        <b>落日橘光</b>（暖橘 + 砖红）、<b>墨绿科普</b>（浅绿 + 墨绿 + 黄底线）。
-        三张卡片换的是<b>颜色</b>，版式是同一套 —— 想换的只是配色时点卡片，想换栏目时点顶栏左侧。<br>
+      <p>顶部主题卡片共<b>五张</b>，对应五个栏目：<b>夜读深蓝</b>（米色 + 深蓝 + 金）、
+        <b>落日橘光</b>（暖橘 + 砖红）、<b>墨绿科普</b>（浅绿 + 墨绿 + 黄底线）、
+        <b>带货玫金</b>（玫红 + 酒红 + 金，好物推荐 / 团购文那一挂）、
+        <b>财税赭石</b>（赭石 + 深砖 + 米黄，旧账簿的调子，算账 / 报税 / 社保这类实用文用）。
+        五张卡片换的是<b>颜色</b>，版式是同一套 —— 想换的只是配色时点卡片，想换栏目时点顶栏左侧。<br>
         主题栏右侧有<b>标题</b>（竖线 / 序号 / 章节条 / 色块 / 居中 / 下划线）、
         <b>引用</b>（竖线 / 卡片 / 重点句）、<b>行距</b>（常规 / 紧凑）、
         <b>正文字号</b>（14–20px，滑杆旁边就是具体数字）四个选择器，可自由组合。<br>
         <b>标题样式各栏目自带一档</b>（2026-09-24 起）：<b>夜读 → 章节条</b>（刊物感）、
         <b>热搜 → 序号</b>（清单感、快节奏，热点文的「第一点、第二点」正好用得上）、
-        <b>科普 → 竖线</b>（线条化、不抢戏，配 15px 密排正文最舒服）。
-        三个栏目因此各有一枚<b>标题指纹</b> —— 读者滑到一篇，不看文字也能认出是哪个号。
+        <b>科普 → 竖线</b>（线条化、不抢戏，配 15px 密排正文最舒服）、
+        <b>带货 → 色块</b>（整条实色底，促销味、在货架流里最抓眼）、
+        <b>财税 → 下划线</b>（深砖字 + 赭石横线，像账本上的一道线，看着就像在算账）。
+        五个栏目因此各有一枚<b>标题指纹</b> —— 读者滑到一篇，不看文字也能认出是哪个号。
         铺架构 / 切栏目 / 重铺架构时会自动套上本栏目的那一档，<b>想换随时在顶栏点</b>，
         换了会跟着这篇的草稿一起记住；分栏默认档之前写的老稿也会<b>自动升级一次</b>
         （只换标题的排法、正文一个字不动，见 ⑤）。<br>
@@ -1100,35 +1280,43 @@
         正文里那些英文<b>不用删</b>——切回「章节条」它们就回来；
         老稿里空格式的默认小标题会被自动补成管道式（带英文），想撤掉随时切档。
       </p>
-      <h4>②′ 三个栏目的组件尺寸是同一套（照科普那套来）</h4>
+      <h4>②′ 四个栏目的组件尺寸是同一套（照科普那套来）</h4>
       <p><b>科普</b>那张卡取自一篇样式很好的科普号文章：墨绿 <code>#059669</code> 作主色、
-        近黑作标题、雾灰作正文。<b>正文强调走「浅绿下划线」而不是底色块</b> —— 与另两个栏目同一手法、只是颜色不同。<br>
-        <b>它的组件尺寸现在是三个栏目的统一基准</b>：<br>
+        近黑作标题、雾灰作正文。<b>正文强调走「浅绿下划线」而不是底色块</b> —— 与另三个栏目同一手法、只是颜色不同。<br>
+        <b>它的组件尺寸现在是四个栏目的统一基准</b>：<br>
         · 刊头 —— 白底 + 1px 浅色描边 + 8px 圆角 + 内边距 14/16，一句主句带 3px 底线<br>
         · 点赞 —— 上下 1px 细线夹住的居中单句，14px<br>
         · 关注卡 —— 8px 圆角 + 内边距 24/20/22，白底二维码框 160×140<br>
         · 重点句 —— 14px 圆角 + 内边距 22/20，17px 主句居中<br>
-        <b>夜读 / 热搜的同名卡已逐项按这套尺寸重做</b>，所以切栏目时版面尺寸一点不动，
+        <b>夜读 / 热搜 / 带货的同名卡已逐项按这套尺寸重做</b>，所以切栏目时版面尺寸一点不动，
         只有颜色换成那个栏目的。每个栏目都是这四张卡（刊头 / 点赞 / 关注 / 重点句），一一对应，
         不会有哪张卡在某个栏目里找不到替代。组件在抽屉里按栏目分组，组内顺序也一致：
-        刊头 → 点赞 → 关注 → 重点句。<br>
-        <b>重点句卡片</b>三个栏目互为同构版 —— 正文里已有别的栏目版时，点新的一张直接原地换皮，卡里那句保留；
+        刊头 → 点赞 → 关注 → 重点句（<b>带货</b>那一组后面还多了商品卡 / 购买引导两张）。<br>
+        <b>重点句卡片</b>四个栏目互为同构版 —— 正文里已有别的栏目版时，点新的一张直接原地换皮，卡里那句保留；
         「引用」选「卡片」档时边框用本栏目的<b>引用专用色</b> —— 和「竖线」档同一条色
-        （夜读钢蓝 / 热搜琥珀 / 科普深青绿，各自只是本栏目色系里另取的一档，
+        （夜读钢蓝 / 热搜琥珀 / 科普深青绿 / 带货莓紫，各自只是本栏目色系里另取的一档，
         与标题色、主色都不重），有意与重点句卡片、刊头的浅描边在颜色上分开：
         <b>引用的三档共用这条色，其它模块都不用它</b>，看到这条色就知道「这段是引来的话」。<br>
         <b>正文轮廓</b>：科普 15px 正文、1.9 行距（点这张卡时字号自动按这套走，顶栏「正文字号」滑杆仍可整体加减）。<br>
-        <b>三个栏目的行距、段间距、正文缩进完全一致</b>（都是常规档、都不缩进），所以三个栏目切换时
+        <b>四个栏目的行距、段间距、正文缩进完全一致</b>（都是常规档、都不缩进），所以四个栏目切换时
         版面节奏不变，只有颜色在换。想在某一篇里收紧行距，随时可在顶栏「行距」切「紧凑」——那只影响当前这篇。
       </p>
       <h4>③ 组件语法</h4>
       <p>
         ① <b>小标题</b>：<code>## 01｜第一个小标题｜SECTION ONE</code> → 顶栏「标题」选<b>章节条</b>时是四件套
-        （大数字 / 数字下英文小字 / 加粗标题 / 标题下英文小字，三个栏目默认样式，英文小字可省略）；
+        （大数字 / 数字下英文小字 / 加粗标题 / 标题下英文小字，四个栏目默认样式，英文小字可省略）；
         选<b>其它档</b>时同一行文字自动变成「01 第一个小标题」的单行式，<b>不用改正文</b>。<br>
         ② <b>下划线强调</b>：正文里 <code>==这几个字==</code> → 下划线 + 加粗（墨绿栏目是浅绿下划线，不用底色块）。<br>
         ③ <b>引用</b>：单独一行 <code>&gt; 一句值得拎出来的话</code> → 左侧竖线 + 浅底（可在顶栏「引用」切成卡片或重点句）。<br>
-        ④ <b>卡片</b>：刊头 / 点赞 / 关注卡用抽屉里的片段，铺架构时已放好位置，替换文字即可。<br>
+        ④ <b>卡片</b>：点赞 / 关注卡用抽屉里的片段，铺架构时已放好位置，替换文字即可。
+        <b>刊头卡不再自动铺</b>（正文顶上已有大标题，再压一张定调卡是把标题说两遍）——
+        想要就自己去抽屉里插，卡片还在，五个栏目的都有。<br>
+        ⑤ <b>分割线</b>：点工具条上的 <b>— 分割线</b>，光标处就插一条；也可以手打
+        <code>---</code>（<code>***</code> / <code>___</code> 同样认），必须<b>单独一行</b>，否则会粘到上一段的行尾。
+        点开的小面板里有 <b>五档线型</b>（渐变 / 细线 / 短线 / 虚线 / 双线），
+        左边那条预览用的就是当前栏目的颜色，选之前先看到长什么样。
+        <b>线型整篇统一</b> —— 跟标题档、引用档一样属于「这篇的调子」，
+        一篇里出现三种线读者只会觉得乱；颜色则自动跟栏目走，不用管。<br>
         分隔符 <b>全角｜半角 | 都认</b>，<code>## 01 | 标题</code>、<code>## 1 | 标题</code>（一位数自动补成 <code>01</code>）都行。<br>
         <b>卡片跟着主题走</b>：切栏目时正文里的刊头 / 点赞 / 关注卡自动换成对应栏目版
         （自己改过卡里文字的不会被动）。
@@ -1140,7 +1328,7 @@
         渲染成「疏排口号 + 引导语 + 浅底卡（时间档 / 白底二维码 / 底注）」，<b>颜色随当前主题自动换</b>，<br>
         <b>栏目名这段默认留空</b>：底部提示已有账号名，卡里写两遍重复（老稿里写了的仍照常渲染，想去掉就留空）。
         换什么主题发都协调。卡盒尺寸与片段库里的关注卡片<b>逐项对齐</b>（8px 圆角、内边距 24/20/22、二维码白框 160px），
-        所以两种写法、三个栏目下，关注卡大小都一样。<br>
+        所以两种写法、四个栏目下，关注卡大小都一样。<br>
         引导语里写 <code>\n</code> 强制换行；某段不想要就留空（两个连续的 <code>||</code>）。<br>
         二维码自动用抽屉里保存的那张（没存则显示占位，复制前记得先存）。<br>
         <b>和片段库里的关注卡片什么区别</b>：片段是固定配色（夜读金 / 热搜橘 / 墨绿各一张）；
@@ -1180,12 +1368,12 @@
       <h4>④ 行距两档</h4>
       <p><b>常规</b>（正文 1.95 / 段间距 18px）　<b>紧凑</b>（1.85 / 16px，同篇幅少滑约半屏）。<br>
         只动行距与段间距，<b>字号、字距、字体三者完全不变</b>，所以看起来还是同一个号的版面。<br>
-        <b>三个栏目的骨架都铺「常规」</b>，默认观感完全一致；想收紧某一篇随时切「紧凑」。
+        <b>四个栏目的骨架都铺「常规」</b>，默认观感完全一致；想收紧某一篇随时切「紧凑」。
       </p>
       <h4>④′ 正文字号（14–20px，滑杆旁边就是具体数字）</h4>
       <p>主题栏最右边的滑杆调的是<b>正文（段落 / 列表）的字号</b>，刻度就是读者手机上看到的 px，
         旁边那块紫色数字牌同步显示当前值 —— 不用再猜「这一格是多大」。<br>
-        <b>默认值</b>：夜读 / 热搜 <b>16px</b>，科普 <b>15px</b>（科普版式本身走的是参考那篇科普号的紧字距）。<br>
+        <b>默认值</b>：夜读 / 热搜 / 带货 <b>16px</b>，科普 <b>15px</b>（科普版式本身走的是参考那篇科普号的紧字距）。<br>
         <b>推荐怎么选</b>：<br>
         · <b>16px</b> —— 微信图文最稳的默认值，手机一屏约 200 字，长文也不累眼，<b>建议就停在这</b><br>
         · <b>15px</b> —— 想在一屏里多塞两行、或文章偏资讯速读时用<br>
@@ -1197,34 +1385,43 @@
         <b>字号写死 px</b>（不用 rem / em），读者在微信里「调整字号」时，你这篇的字号不会被跟着乱缩放 ——
         这也是「排版体检」反复强调的一条。
       </p>
-      <h4>⑤ 三个栏目</h4>
+      <h4>⑤ 四个栏目</h4>
       <p><b>版式一样、配色和标题档各自不同</b> —— 读者一眼知道是哪个栏目，也知道是同一个号。<br>
         <b>夜读</b>：米色 + 深蓝 + 金，强调下划线用金，标题<b>章节条</b>（刊物感）<br>
         <b>热搜</b>：暖橘 + 砖红，强调下划线用浅橘，标题<b>序号</b>（清单感、快节奏）<br>
         <b>科普</b>：浅绿 + 墨绿 + 黄底线，强调下划线用浅绿，标题<b>竖线</b>（线条化、不抢戏）<br>
-        三个栏目用<b>同一套架构</b>（刊头 → 引言 → 01/02/03 → 写到最后 → 点赞 → 关注卡）、
-        <b>同一套组件尺寸</b>（刊头 / 点赞 / 关注卡 / 重点句卡逐项对齐，见 ②′）、
+        <b>带货</b>：玫红 + 酒红 + 金，强调下划线用浅玫粉，标题<b>色块</b>（整条实色底、促销味）；
+        骨架在 03 后面自带<b>商品卡 + 购买引导</b>两张卡（名称 / 卖点 / 价格、怎么下单）——
+        这两张是带货专属，切到别的栏目时不会被换掉或删掉，你填的内容原样留着<br>
+        四个栏目用<b>同一套架构</b>（引言 → 01/02/03 → 写到最后 → 点赞 → 关注卡）、
+        <b>同一套组件尺寸</b>（点赞 / 关注卡 / 重点句卡逐项对齐，见 ②′）、
         <b>同一种强调手法</b>（下划线）、<b>同一档行距</b>（常规）、<b>同一档正文字号</b>（见 ④′）——
         差的只有配色和标题档位：配色让你认出栏目，标题档位是每个栏目那枚「标题指纹」，
-        所以三个栏目写起来手感一致，切过去版面尺寸不动，换的是颜色和标题的排法。<br>
-        栏目切换在<b>顶栏左侧</b>：切过去带来的不只是配色，还有那个栏目上次写的那篇稿，<b>三边各存一份、互不覆盖</b>。<br>
+        所以四个栏目写起来手感一致，切过去版面尺寸不动，换的是颜色和标题的排法。<br>
+        栏目切换在<b>顶栏左侧</b>：切过去带来的不只是配色，还有那个栏目上次写的那篇稿，<b>四边各存一份、互不覆盖</b>。<br>
         <b>打开的方式</b>：回到上次停的那个栏目 —— 写过就把那篇原样摆回来；没写过就铺好它自己的整篇架构。
-        三个栏目都有一套完整架构，所以打开永远不会是空白页，也不会替你跳到别的栏目去。<br>
+        四个栏目都有一套完整架构，所以打开永远不会是空白页，也不会替你跳到别的栏目去。<br>
         <b>旧稿自动跟上新版式</b>：老草稿里的旧尺寸卡片（大刊头 / 大关注卡 / 无描边重点句）在打开或切栏目时
         自动换成本栏目新版，卡里你自己写的那句话保留。<br>
         <b>老稿的标题档也一起换成本栏目默认档</b>（<b>只升一次</b>）：分栏默认档之前写的稿，
         标题还停在当年那个档，打开时自动变成本栏目那一档 —— 夜读稿本来就是这个档，看不出变化；
-        热搜 / 科普稿会从章节条换成序号 / 竖线（正文一个字不动）。
+        热搜 / 科普 / 带货稿会从章节条换成序号 / 竖线 / 色块（正文一个字不动）。
         <b>升级只做一次</b>，之后你在顶栏自己挑的档位照常记进草稿、不会再被默认值改写；
         想主动重来一遍就点编辑器上方「重铺架构」（那个会连正文一起换成空架构）。<br>
         抽屉里的片段按栏目分组，并按<b>文章从上到下</b>的顺序排列，照着拼即可。
       </p>
-      <h4>⑥ 二维码（存一次就够）</h4>
-      <p>抽屉里选一次二维码图片即可，工具会<b>自动压缩成 320px 小图</b>再保存（几 KB，不影响扫码）。
+      <h4>⑥ 二维码（每个栏目可以不一样）</h4>
+      <p>抽屉里先点<b>哪个槽</b>，再选图，图就存进那个槽 —— 槽位有两级：<br>
+        · <b>通用</b>：五个栏目共用的一张，没单独设置过的栏目都走它（带绿勾 = 这个槽自己存过图）；<br>
+        · <b>某个栏目</b>（夜读 / 热搜 / 科普 / 带货 / 财税）：单独存一张，切到这个栏目时优先用它，
+        别的栏目不受影响。哪个栏目换了号，就给它单独存一张，<b>之后不用每篇重贴</b>。<br>
+        工具会<b>自动压缩成 320px 小图</b>再保存（几 KB，不影响扫码）。
         编辑器里只保留一行「二维码图片放这里」短占位，<b>预览和复制到公众号时</b>才替换成真图 ——
-        源码里不会出现长串 base64 字符。旧版存过大图的，抽屉里点「压缩瘦身」一键重压。</p>
+        源码里不会出现长串 base64 字符。
+        正文里已经填过真图的旧稿，点<b>「把正文里的二维码换成「X」的」</b>一次就能刷成当前栏目该用的那张。
+        旧版存过大图的，点「压缩瘦身」一键重压。</p>
       <h4>⑦ 配置备份</h4>
-      <p>二维码、主题设置、自定义片段、<b>三个栏目各自的草稿</b>都存在<b>浏览器本地</b>。清缓存或换电脑前，
+      <p>二维码、主题设置、自定义片段、<b>四个栏目各自的草稿</b>都存在<b>浏览器本地</b>。清缓存或换电脑前，
         抽屉底部点「导出配置」存一个 JSON；换环境点「导入配置」完整还原。</p>
       <h4>⑧ 图片相关</h4>
       <p><b>满宽大图</b>：图片单独写一行 <code>![图](地址)</code>，自动满宽出血，正文保留左右留白。<br>
@@ -1261,21 +1458,22 @@
       <div id="builtinList"></div>
       <div class="frag-sec">我的片段</div>
       <div id="myList"></div>
-      <div class="frag-sec">公众号二维码 · 存一次，每篇自动带上</div>
+      <div class="frag-sec">公众号二维码 · 每个栏目可以不一样</div>
       <div class="frag-tip" style="margin-bottom:10px;">
-        二维码是固定的，<b>只需保存一次</b>。选图后会自动<b>压缩成 320px 小图</b>再存（只有几 KB）。
-        编辑器里始终只放一行「二维码图片放这里」短占位，<b>预览和复制到公众号时</b>才替换成真图 ——
-        源码里不会再出现长串 base64 字符。也可以直接粘贴素材库图片地址（最短）。
-        存好之后，夜读 / 热搜关注卡片自动带上，不上传任何地方。
+        <b>通用</b>那张是五个栏目共用的；哪个栏目换了号（比如财税），就点上面那个栏目单独存一张，
+        之后切到它自动用自己那张，别的栏目不受影响 —— <b>不用每篇重贴</b>。
+        选图后自动<b>压缩成 320px 小图</b>再存（只有几 KB），编辑器里始终只放一行「二维码图片放这里」短占位，
+        <b>预览和复制到公众号时</b>才替换成真图，源码里不会出现长串 base64。
       </div>
+      <div class="qr-tabs" id="qrChans"></div>
       <div id="qrBox"></div>
       <input type="file" id="qrFile" accept="image/*" style="display:none" onchange="setQRFromFile(event)">
-      <button class="btn-save" style="margin-top:0;" onclick="document.getElementById('qrFile').click()">选择二维码图片并保存</button>
+      <button class="btn-save" style="margin-top:0;" id="qrSaveBtn" onclick="document.getElementById('qrFile').click()">选择二维码图片并保存</button>
       <input id="qrUrl" style="margin-top:8px;" placeholder="或粘贴图片地址（公众号素材库 / 图床）">
       <button class="btn-xs" style="width:100%;margin-top:8px;padding:9px;" onclick="setQRFromUrl()">用上面的地址保存</button>
       <button class="btn-xs" style="width:100%;margin-top:8px;padding:9px;" onclick="recompressQR()">已保存的二维码压缩瘦身（旧版大图用）</button>
-      <button class="btn-xs" style="width:100%;margin-top:8px;padding:9px;" onclick="applyQRToDoc()">把当前文章的二维码占位换成它</button>
-      <button class="btn-xs" style="width:100%;margin-top:8px;padding:9px;" onclick="clearQR()">清除已保存的二维码</button>
+      <button class="btn-xs" style="width:100%;margin-top:8px;padding:9px;" id="qrApplyBtn" onclick="applyQRToDoc()">把当前文章的二维码占位换成它</button>
+      <button class="btn-xs" style="width:100%;margin-top:8px;padding:9px;" onclick="clearQR()">清除这个槽的二维码</button>
       <div class="frag-sec">其它图片转代码</div>
       <div class="frag-tip" style="margin-bottom:10px;">
         临时用一张本地图片（不是二维码）时：选图后自动生成一行 <code>&lt;img&gt;</code> 代码并复制，
@@ -1561,7 +1759,7 @@
           var tb = rows.map(function (r) {
             return '<tr>' + r.map(function (c) { return '<td data-t="td">' + inline(c) + '</td>'; }).join('') + '</tr>';
           }).join('');
-          out.push('<section data-t="table-wrap"><table data-t="table"><thead><tr>' + th + '</tr></thead><tbody>' + tb + '</tbody></table></section>');
+          out.push('<section data-t="table-wrap"><table data-t="table" cellspacing="0" cellpadding="0"><thead><tr>' + th + '</tr></thead><tbody>' + tb + '</tbody></table></section>');
           continue;
         }
 
@@ -1646,7 +1844,7 @@
       var MONO = 'ui-monospace,Menlo,Consolas,"Courier New",monospace';
 
       /* ---------- 小标题（##）多种可选样式 ---------- */
-      /* 章节编号条（三个栏目默认）：左侧大号章节数字 + 细竖线 + 右侧中英标题两组
+      /* 章节编号条（四个栏目默认）：左侧大号章节数字 + 细竖线 + 右侧中英标题两组
          取自参考版式的「01 / PART」组件。顶栏「标题」切别的档位时这些样式用不到。
          【布局警示】多栏并排只能用 inline-block：粘贴时微信会把 display:flex 剥掉
          （实测整行塌成行内文字流），也会重排 table 的 td 宽度。行内块之间不要留空白。 */
@@ -1688,8 +1886,8 @@
         sub: 'margin:0;font-size:11px;line-height:1.5;font-weight:600;color:' + p.sub + ';letter-spacing:1.5px;',
         txtBox: 'display:inline-block;vertical-align:middle;text-align:left;'
       };
-      /* 正文里的强调（==这几个字==）：【三个栏目统一】都走「下划线 + 加粗」，
-         不用底色块 —— 三个栏目版式一致，强调手法也一致。
+      /* 正文里的强调（==这几个字==）：【四个栏目统一】都走「下划线 + 加粗」，
+         不用底色块 —— 四个栏目版式一致，强调手法也一致。
          下划线颜色取 markline（主题各自配：夜读金 / 热搜橘 / 科普浅绿），
          没配 markline 的主题回落到 hl（浅底色），保证不会渲染成透明。 */
       var MARK_STYLE = 'background:transparent;color:' + p.deep + ';font-weight:600;padding:0 1px;border-bottom:2px solid ' + (p.markline || p.hl) + ';border-radius:0;';
@@ -1734,7 +1932,7 @@
         },
         mark: (function () {
           /* 重点句（引用选「重点句」档）：上下细线夹住的居中加粗句 —— 参考版式的「独立重点句」。
-             【三栏目统一这个样式】，颜色取主题 main。
+             【四栏目统一这个样式】，颜色取主题 main。
              【上下细线走 2px qbar，不走 1px line】（2026-09-24 改）：
              点赞引导（b-like）就是「上下 1px 浅色细线 + 居中加粗句」，原来这档和它几乎同款
              （科普连字色都一样是 #059669）—— 用户反馈要分开。
@@ -1750,10 +1948,10 @@
       };
 
       /* ---------- 行距档位 ----------
-         normal = 常规（慢读、护眼，正文 1.95 / 段间距 18px）——【三个栏目统一用这一档】
+         normal = 常规（慢读、护眼，正文 1.95 / 段间距 18px）——【四个栏目统一用这一档】
          tight  = 紧凑（快读、信息密度高，1.85 / 16px；同长度少滑约半屏）
          只动行距与段间距，字号 / 字距 / 字体完全不变。
-         三个栏目的骨架都取 normal（见 SKELETON_SET.density），所以默认观感完全一致；
+         四个栏目的骨架都取 normal（见 SKELETON_SET.density），所以默认观感完全一致；
          想在某一篇里收紧，随时可在顶栏「行距」切「紧凑」——那只影响当前这篇。 */
       var dense = (opt.density === 'tight');
       var LH_P = dense ? 1.85 : 1.95;    /* 正文行距 */
@@ -1826,18 +2024,34 @@
         'pre-code': 'margin:0;font-family:' + MONO + ';font-size:13px;line-height:1.75;color:#e8e6f2;white-space:pre-wrap;word-break:break-all;',
         'code-inline': 'font-family:' + MONO + ';font-size:14px;background:' + p.soft + ';color:' + p.main + ';padding:2px 6px;border-radius:5px;',
 
-        hr: 'margin:34px 0;height:3px;background:linear-gradient(90deg,' + p.main + ' 0%,' + p.hl + ' 55%,rgba(255,255,255,0) 100%);border-radius:3px;',
+        /* 分割线（正文里单独一行 --- / *** / ___ 都认）：
+           五档样式共用同一条语义，换风格只改这一处 —— 正文里永远只有 ---，
+           不用为了换个线型去改稿子。配色只用本栏目的 p.main / p.line，
+           所以五个栏目各是各的颜色，不会跳出别的号的调子。
+             grad   渐变：左浓右淡，原来那一款（默认）
+             line   细线：一条通栏 1px，最通用、最不抢戏
+             short  短线：居中一小截，章节感强，像书上划的一道
+             dash   虚线：轻一点，适合正文里夹着用
+             double 双线：上下两条细线，老派排版的郑重感 */
+        hr: (function () {
+          var k = opt.hr || 'grad';
+          if (k === 'line') return 'margin:32px 0;height:1px;background:' + p.line + ';';
+          if (k === 'short') return 'margin:34px auto;height:2px;width:56px;background:' + p.main + ';border-radius:2px;';
+          if (k === 'dash') return 'margin:32px 0;height:0;border-top:1px dashed ' + p.line + ';';
+          if (k === 'double') return 'margin:32px 0;height:4px;border-top:1px solid ' + p.line + ';border-bottom:1px solid ' + p.line + ';';
+          return 'margin:34px 0;height:3px;background:linear-gradient(90deg,' + p.main + ' 0%,' + p.hl + ' 55%,rgba(255,255,255,0) 100%);border-radius:3px;';
+        })(),
 
         'table-wrap': 'margin:22px 0;overflow-x:auto;',
-        'table': 'width:100%;border-collapse:collapse;font-size:14px;',
-        'th': 'padding:10px 12px;background:' + p.main + ';color:#ffffff;font-weight:700;text-align:left;font-size:14px;line-height:1.6;border:1px solid ' + p.main + ';',
+        'table': 'width:100%;border-collapse:collapse;border-spacing:0;font-size:14px;',
+        'th': 'padding:10px 12px;background:' + p.main + ';color:#ffffff;font-weight:700;text-align:left;font-size:14px;line-height:1.6;border:1px solid rgba(255,255,255,.55);',
         'td': 'padding:10px 12px;color:' + p.text + ';font-size:14px;line-height:1.7;border:1px solid ' + p.line + ';background:#ffffff;',
 
         /* ---------- 关注引导卡（&& 一行式）----------
            配色全部跟主题走：口号 / 栏目名用主色，时间档 / 底注用次级色，
            卡片用浅底 + 主题描边；二维码白底框不随主题（扫码画面要干净）。
            卡盒尺寸与片段库里的关注卡片【逐项对齐】：8px 圆角、内边距 24/20/22、
-           二维码白框 160px。所以不管用哪条路子插关注卡，三个栏目、两种写法下
+           二维码白框 160px。所以不管用哪条路子插关注卡，四个栏目、两种写法下
            卡片大小都一样。二维码图由抽屉统一保存，渲染时自动替换进白框。 */
         follow: 'margin:34px 0 10px;text-align:center;',
         'fw-slogan': 'margin:0 0 14px;font-size:12px;font-weight:700;color:' + p.main + ';letter-spacing:6px;text-indent:6px;',
@@ -1865,7 +2079,7 @@
          ② 不与该主题的 main / deep / markline 相同（重复 = 又变成「标题色溢出」）；
          ③ 亮度取中间档（不比 main 艳、不比 deep 沉），4px 一条不抢戏。
        （以前夜读/热搜的 qbar 就是 deep 的复制、科普的就是 main 的复制，已按上面改掉。） */
-    /* 主题栏只保留三个栏目主题 —— 一个栏目一套色，不再有「随便挑个配色」的游离主题。
+    /* 主题栏只保留四个栏目主题 —— 一个栏目一套色，不再有「随便挑个配色」的游离主题。
        三个主题的【版式完全相同】（同一个骨架函数 skeletonMD 铺出来：
        刊头 → 引言 → 01/02/03 → 写到最后 → 点赞 → 关注卡，小标题竖线 + 引言框 + 重点句），
        差异只在 palette —— 也就是说「样式一样，颜色各自」。
@@ -1913,14 +2127,14 @@
            code 代码块底跟着换成墨绿近黑 #022C22 —— 与夜读（深蓝底）、
            热搜（深棕底）同一套「代码块底 = 主题墨色加深」的做法。
            bg 用极浅的薄荷绿白 #F6FBF7 —— 与夜读的暖米白、热搜的暖橘白同等的
-           「比卡片底更浅一档」的页面底色，三个栏目都有各自的底色氛围。
-           正文强调走「浅绿下划线」（markline），与另两栏目同一手法、只是颜色不同。
+           「比卡片底更浅一档」的页面底色，四个栏目都有各自的底色氛围。
+           正文强调走「浅绿下划线」（markline），与另四栏目同一手法、只是颜色不同。
            qbar = 引用装饰色：深青绿 #0F766E。
            【2026-09-29 改】原来用 #059669（= main），于是引用竖线和「竖线标题」(H2.bar
            的 border-left 也是 main)、序号块、列表圆点全是同一支绿 —— 同色同手法。
            现在换成深青绿：比 main 深一档、又比 deep #065F46 偏青，夹在两者中间自成一档，
            跟 H2.bar 并排时不再撞脸，整体仍是墨绿主题里的一档绿，不突兀。
-           正文不缩进、行距与另两栏目一致 —— 三栏目版式统一。 */
+           正文不缩进、行距与另四栏目一致 —— 四栏目版式统一。 */
         id: 'sci', name: '墨绿科普',
         palette: {
           main: '#059669', deep: '#065F46', soft: '#F0FDF4', hl: '#D1FAE5',
@@ -1930,13 +2144,60 @@
           markline: '#A7F3D0', qbar: '#0F766E'
         },
         chip: 'linear-gradient(135deg,#34D399,#047857)'
+      },
+      {
+        /* 带货：玫红 + 酒红 + 金 —— 文章带货栏目（好物推荐 / 团购文）专用。
+           取色逻辑与另三栏一致，只是把「栏目味」换成促销感：
+           main 玫红 #D6336C —— 圆点 / 序号 / 价格这类「要被看到」的地方；
+           deep 酒红 #8E244D —— 标题与加粗，压得住正文又不发黑（不取近黑，带货文要暖）；
+           soft 浅粉 #FFF0F4 / bg 粉白 #FFFAFC —— 卡片底与页面底差一档，
+             与夜读暖米、热搜暖橘、科普薄荷白同一套「底色氛围」做法；
+           markline 浅玫粉 #FFA0B4 —— 正文强调的下划线，与另三栏同一手法、只换颜色；
+           qbar 莓紫 #B83280 —— 引用专用色：玫红系里偏紫的一档中间调，
+             与 main / deep / markline 都不重，4px 一条不抢商品卡的戏（守 ①色系内 ②不重复 ③中间档）。
+           金 #E8C27A 只作刊头 / 商品卡的底线与角标，是带货文「促销感」的那支笔，
+           不参与正文 —— 正文里再出现金就会显得花。
+           【正文字号】与其它栏目一样取 16px 基准（THEME_BASE 里没有 shop，即 1）。 */
+        id: 'shop', name: '带货玫金',
+        palette: {
+          main: '#D6336C', deep: '#8E244D', soft: '#FFF0F4', hl: '#FFD9E2',
+          bg: '#FFFAFC', text: '#4A3B41', sub: '#A3888F', quote: '#6B4050',
+          line: '#FBE0E6', code: '#3A1C26',
+          cn: '#D6336C',
+          markline: '#FFA0B4', qbar: '#B83280'
+        },
+        chip: 'linear-gradient(135deg,#F79AB8,#D6336C)'
+      },
+      {
+        /* 财税：赭石 + 牛皮纸 —— 算账 / 报税 / 社保这类「讲清楚一件事」的实用文专用。
+           取色逻辑与另四栏一致，只是把「栏目味」换成旧账簿的调子：
+           main 赭石 #B45309 —— 圆点 / 序号 / 强调这类「要被看到」的地方，
+             是旧账本封皮那种偏橙的褐，不是热搜的橘（#FF7043 亮而跳），压得住；
+           deep 深砖 #7C2D12 —— 标题与加粗，比 main 沉两档，压得住正文；
+           soft 米黄 #FDF6E9 / bg 米白 #FFFCF5 —— 卡片底与页面底差一档，
+             与夜读暖米、热搜暖橘、科普薄荷白同一套「底色氛围」做法；
+           text 暖褐 #4A3B2E —— 正文不用纯黑，旧纸张上的墨迹感；
+           markline 浅金 #F2C97D —— 正文强调的下划线，与另四栏同一手法、只换颜色；
+           qbar 黄棕 #A16207 —— 引用专用色：赭石系里不偏红、不偏黄的一档中间调，
+             与 H2 的下划线（markline 浅金）、正文加粗（deep 深砖）并排也不撞脸。
+           金色只走 markline / 刊头底线，不参与正文 —— 正文里再出现金会显花。
+           【正文字号】与夜读 / 热搜 / 带货一样取 16px 基准（THEME_BASE 里没有 tax，即 1）。 */
+        id: 'tax', name: '财税赭石',
+        palette: {
+          main: '#B45309', deep: '#7C2D12', soft: '#FDF6E9', hl: '#FBE8C6',
+          bg: '#FFFCF5', text: '#4A3B2E', sub: '#A89685', quote: '#7A5B3A',
+          line: '#EFE0C6', code: '#2E2117',
+          cn: '#B45309',
+          markline: '#F2C97D', qbar: '#A16207'
+        },
+        chip: 'linear-gradient(135deg,#E0A458,#B45309)'
       }
     ];
 
     /* ================================================================
        三、渲染 + 样式内联
        ================================================================ */
-    var state = { theme: 'night', scale: 1, width: 'narrow', h2: 'chapter', quote: 'line', density: 'normal' };
+    var state = { theme: 'night', scale: 1, width: 'narrow', h2: 'chapter', quote: 'line', density: 'normal', hr: 'grad' };
 
     /* 各主题的字号基准：1 = 正文 16px。
        科普取参考版式的 15px 根字号（正文 14px），版式松紧和原文一致；
@@ -1947,7 +2208,7 @@
       var mdEl = document.getElementById('editor');
       var root = document.getElementById('root');
       var theme = THEMES.find(function (t) { return t.id === state.theme; }) || THEMES[0];
-      var S = buildTheme(theme.palette, { h2: state.h2, quote: state.quote, density: state.density });
+      var S = buildTheme(theme.palette, { h2: state.h2, quote: state.quote, density: state.density, hr: state.hr });
 
       /* 二维码占位：编辑器里只放短占位，存过二维码就在这里替换成真图，
          源码里不会出现长串 base64 字符 */
@@ -1997,7 +2258,7 @@
 
       /* 字号：正文默认 16px（夜读 / 热搜）；科普基准 0.94 → 正文默认 15px。
          顶栏滑杆给的是具体 px（14–20），换算成 k 时已经除掉主题基准，
-         所以滑到 16 就是 16px 正文，三个栏目一致。 */
+         所以滑到 16 就是 16px 正文，四个栏目一致。 */
       /* 缩放系数 k = 主题基准 × 滑杆换算出来的比例（滑杆 -> state.scale 见 setFontPx）；
          必须是「字号和行高一起缩放」。
          踩过的坑（2026-09-23 公众号「内容结构检测」报「行高小于字体大小、可能文字重叠」）：
@@ -2064,27 +2325,40 @@
       buildChanSwitch();
     }
     /* ---------- 栏目切换（顶栏常驻） ----------
-       三个栏目：夜读 / 热搜 / 科普。配色与骨架都跟着栏目走，
+       四个栏目：夜读 / 热搜 / 科普 / 带货。配色与骨架都跟着栏目走，
        切换＝存下当前这篇 + 取回目标栏目那篇（没写过就铺整篇骨架）。
        各栏目的默认标题档位不在这里，在 SKELETON_SET 的 h2 字段：
-       夜读 chapter（章节条）/ 热搜 num（序号）/ 科普 bar（竖线）—— 标题指纹见那里的说明。 */
+       夜读 chapter（章节条）/ 热搜 num（序号）/ 科普 bar（竖线）/ 带货 block（色块）
+       —— 标题指纹见那里的说明。 */
     var CHANNELS = [
       { id: 'night', name: '夜读', dot: '#C9A961', color: '#2C4A6B', when: '每晚 20:30' },
       { id: 'hot', name: '热搜', dot: '#E8845F', color: '#B8431F', when: '每天 11:40' },
       /* 科普：墨绿配色，独立栏目（各自存稿）。没有固定时间档 —— when 留空 */
-      { id: 'sci', name: '科普', dot: '#059669', color: '#047857', when: '' }
+      { id: 'sci', name: '科普', dot: '#059669', color: '#047857', when: '' },
+      /* 带货：玫红金配色，独立栏目（各自存稿）。没有固定时间档 —— when 留空。
+         它是四个栏目里唯一带「商品卡 / 购买引导」的（见 SKELETON_SET.shop.mids），
+         其余版式与另三栏一致。 */
+      { id: 'shop', name: '带货', dot: '#D6336C', color: '#A82C55', when: '' },
+      /* 财税：赭石牛皮纸风（账本调性），独立栏目（各自存稿）。
+         配色刻意避开前四栏：夜读是深蓝、热搜是暖橘、科普是墨绿、带货是玫红，
+         这里取「旧账簿」的赭石 + 深砖，一眼能认出是算账的文。
+         标题档取 'underline'（下划线）—— 六个档位里剩下唯一没被用过的，
+         正好也像账本上的横线（见 SKELETON_SET.tax.h2）。 */
+      { id: 'tax', name: '财税', dot: '#B45309', color: '#7C2D12', when: '' }
     ];
 
-    /* 主题 id → 栏目。三个栏目主题一一对应，没有游离主题了。
+    /* 主题 id → 栏目。四个栏目主题一一对应，没有游离主题了。
        注：这里保留 'forest' 的映射只为兼容老草稿（旧版本存过 forest 槽），
        新版本里它已不在 THEMES 中，不会再被选中。 */
     function channelOf(themeId) {
       if (themeId === 'sunset' || themeId === 'hot') return 'hot';
       if (themeId === 'sci' || themeId === 'forest') return 'sci';
+      if (themeId === 'shop') return 'shop';
+      if (themeId === 'tax') return 'tax';
       return 'night';
     }
 
-    /* 画顶栏的夜读 / 热搜 / 科普：当前栏目高亮填色，鼠标悬停显示它上次存稿的时间 */
+    /* 画顶栏的夜读 / 热搜 / 科普 / 带货：当前栏目高亮填色，鼠标悬停显示它上次存稿的时间 */
     function buildChanSwitch() {
       var box = document.getElementById('chanSwitch');
       if (!box) return;
@@ -2103,17 +2377,17 @@
       }).join('');
     }
 
-    /* 栏目 id → 该栏目的正文主题 id（夜读 = night / 热搜 = sunset / 科普 = sci） */
+    /* 栏目 id → 该栏目的正文主题 id（夜读 = night / 热搜 = sunset / 科普 = sci / 带货 = shop） */
     function chanTheme(chId) {
       /* 栏目主题固定成映射表，不再靠 SKELETON_SET 兜底 ——
          否则 SKELETON_SET 缺键时会静默落到夜读，栏目按钮和正文配色就对不上了 */
-      var MAP = { night: 'night', hot: 'sunset', sci: 'sci' };
+      var MAP = { night: 'night', hot: 'sunset', sci: 'sci', shop: 'shop', tax: 'tax' };
       if (MAP[chId]) return MAP[chId];
       var s = SKELETON_SET[chId] || SKELETON_SET.night;
       return s.theme;
     }
 
-    /* 【切栏目】点顶栏的夜读 / 热搜 / 科普：
+    /* 【切栏目】点顶栏的夜读 / 热搜 / 科普 / 带货：
        1) 先把现在这篇连样式存回它自己的栏目（不会丢）
        2) 目标栏目写过 → 原样取回来：正文、标题样式、引用样式、行距、字号、预览宽度
        3) 目标栏目还没写过 → 直接把该栏目的整篇架构铺上（现在这篇已存进它自己的栏目里） */
@@ -2152,9 +2426,9 @@
         var cardMsg = syncCardsTo(id);
         toast('切到「' + chanLabel(id) + '」· 接上 ' + (draftWhen(snap) || '上次') + ' 写的那篇' + (cardMsg ? ' · ' + cardMsg : ''));
       } else {
-        /* 这个栏目还没写过 → 直接铺整篇架构（三个栏目同一套结构，只是配色不同）：
-           刊头卡、引言框、01/02/03、下划线强调、重点句、点赞、关注卡全都摆好，
-           替换占位文字就能写。 */
+        /* 这个栏目还没写过 → 直接铺整篇架构（四个栏目同一套结构，只是配色不同）：
+           引言框、01/02/03、下划线强调、重点句、点赞、关注卡全都摆好，
+           替换占位文字就能写（刊头卡不铺了，见 skeletonMD 的说明）。 */
         insertSkeleton(id);
         return;
       }
@@ -2185,7 +2459,7 @@
        后台渲染时：正文 = 16px × 主题基准 × 缩放系数。
        夜读 / 热搜基准 1（正文 16px），科普基准 0.94（正文 15px）。
        滑杆上不再显示 0.85~1.25 的倍数，直接显示读者看到的正文字号：
-       换算时把主题基准除掉，所以三个栏目滑到同一个数字，正文就是同一个字号。 */
+       换算时把主题基准除掉，所以四个栏目滑到同一个数字，正文就是同一个字号。 */
     var FS_MIN = 14, FS_MAX = 20;
     function baseOf(themeId) {
       return THEME_BASE[themeId || state.theme] || 1;
@@ -2303,14 +2577,21 @@
 
       /* --- 1. 危险布局（错误级） --- */
       var flexHit = (html.match(/display:\s*flex/gi) || []).length;
-      var tableHit = (html.match(/<table/gi) || []).length;
+      /* table 分两类：本工具渲染 md 表格生成的（带 data-t="table"，内联样式完整，cellspacing 已兜底，不算事故）
+         和外来 HTML 片段带进来的（没有任何兜底，宽度必被微信重排）。只对外来的报警。 */
+      var rawTables = (root.innerHTML.match(/<table[^>]*>/gi) || []);
+      var ownTable = 0, tableHit = 0;
+      rawTables.forEach(function (t) {
+        if (/data-t=["']table["']/i.test(t)) { ownTable++; } else { tableHit++; }
+      });
       if (flexHit || tableHit) {
         items.push({
           lv: 'err', t: '发现 flex / table 布局',
           d: '微信粘贴时会清洗这两种写法：' + (flexHit ? 'flex ' + flexHit + ' 处（会被整个剥掉，多栏塌成一行）' : '') +
             (flexHit && tableHit ? '、' : '') + (tableHit ? 'table ' + tableHit + ' 处（结构留着但单元格宽度会被重排）' : '') +
-            '。' + '这个工具的样式本该全部是 inline-block，出现说明有外来 HTML 片段带进来了。',
-          f: '打开「HTML 片段」抽屉，检查最近插入的片段里有没有 flex / table'
+            '。' + '这个工具的样式本该全部是 inline-block，出现说明有外来 HTML 片段带进来了。' +
+            (ownTable ? '另有 ' + ownTable + ' 处是本工具渲染的 md 表格（内联样式完整、cellspacing 已兜底），不在拦截范围。' : ''),
+          f: '打开「HTML 片段」抽屉，检查最近插入的片段里有没有 flex / table；本工具渲染的 md 表格可忽略此项'
         });
       }
 
@@ -2723,7 +3004,7 @@
          · text-align:start / end   → 弹「文本对齐属性使用了非标准值」
          · caret-color 透明 / img opacity:0 → 对应确认框（片段里极少见，兜个底）
 
-       实测结论（2026-10-09，官方检测器跑了三栏目 × 六种标题档 × 各组件 + 代码块 + 分隔线）：
+       实测结论（2026-10-09，官方检测器跑了四栏目 × 六种标题档 × 各组件 + 代码块 + 分隔线）：
        工具自带的样式**全部合规**，唯一命中过的是「竖线标题」原来的渐变背景（已在 buildTheme 里
        改成实色）。所以这里报出来的，基本都来自自定义 :::html 片段，或从外面粘进来的带样式内容。
        注意：布局类规则（行高叠字 / 固定宽度差异 / 溢出）本地量不出来，得靠官方那个 CLI，
@@ -2911,7 +3192,7 @@
 
     /* 片段分组：抽屉里按栏目归类显示。
        「夜读」= 米色 + 深蓝 + 金（静心调性）；「热搜」= 暖橘 + 砖红（热度调性）。
-       三个栏目版式完全一致，只换配色 —— 统一版式 + 差异化配色。 */
+       四个栏目版式完全一致，只换配色 —— 统一版式 + 差异化配色。 */
     var FRAG_GROUP = {
       'b-keyhead': '夜读 · 米色深蓝金',
       'b-like': '夜读 · 米色深蓝金',
@@ -2927,15 +3208,27 @@
       'b-forest-highlight': '墨绿 · 知识科普风',
       'b-forest-like': '墨绿 · 知识科普风',
       'b-forest-follow': '墨绿 · 知识科普风',
+      'b-shop-keyhead': '带货 · 玫红酒红金',
+      'b-shop-like': '带货 · 玫红酒红金',
+      'b-shop-follow': '带货 · 玫红酒红金',
+      'b-shop-highlight': '带货 · 玫红酒红金',
+      'b-shop-goods': '带货 · 玫红酒红金',
+      'b-shop-cta': '带货 · 玫红酒红金',
+      'b-tax-keyhead': '财税 · 赭石牛皮纸',
+      'b-tax-like': '财税 · 赭石牛皮纸',
+      'b-tax-follow': '财税 · 赭石牛皮纸',
+      'b-tax-highlight': '财税 · 赭石牛皮纸',
       'b-divider': '通用'
     };
 
     /* 抽屉里的展示顺序：按「一篇文章从上到下」的位置排，方便照着拼。
-       三个栏目逐项对齐 —— 刊头 → 点赞 → 关注 → 重点句，组内顺序完全一致。 */
+       四个栏目逐项对齐 —— 刊头 → 点赞 → 关注 → 重点句，组内顺序完全一致。 */
     var FRAG_ORDER = [
       'b-keyhead', 'b-like', 'b-follow', 'b-night-highlight',
       'b-hot-keyhead', 'b-hot-like', 'b-hot-follow', 'b-hot-highlight',
       'b-forest-keyhead', 'b-forest-like', 'b-forest-follow', 'b-forest-highlight', 'b-forest-note', 'b-forest-sep',
+      'b-shop-keyhead', 'b-shop-like', 'b-shop-follow', 'b-shop-highlight', 'b-shop-goods', 'b-shop-cta',
+      'b-tax-keyhead', 'b-tax-like', 'b-tax-follow', 'b-tax-highlight',
       'b-divider'
     ];
     function fragRank(id) {
@@ -2944,8 +3237,8 @@
     }
 
     var BUILTIN_FRAGS = [
-      /* ---------- 三栏目的组件：同一套几何尺寸，只有配色各自 ----------
-         统一基准（照墨绿科普那套尺寸来，三个栏目逐项对齐）：
+      /* ---------- 四栏目的组件：同一套几何尺寸，只有配色各自 ----------
+         统一基准（照墨绿科普那套尺寸来，四个栏目逐项对齐）：
            刊头   白底 + 1px 浅色描边 + 8px 圆角 + 内边距 14/16，一句主句带 3px 底线
            点赞   上下 1px 细线夹住的居中单句，14px
            关注卡 浅底 + 1px 浅色描边 + 8px 圆角 + 内边距 24/20/22，白底二维码框 160×140
@@ -2956,12 +3249,56 @@
            热搜 = 砖红 #B8431F + 浅橘 #FFB48F + 暖橘 #FFF4EC
            科普 = 墨绿 #059669 + 黄 #FDE68A + 浅绿 #F0FDF4 */
       {
-        id: 'b-keyhead', name: '夜读刊头', desc: '白底浅金边，一句关键词定调 —— 尺寸与另两栏目完全一致',
+        id: 'b-keyhead', name: '夜读刊头', desc: '白底浅金边，一句关键词定调 —— 尺寸与另四栏目完全一致',
         html: [
           '<section style="background-color:#FFFFFF;border:1px solid #EFE3C8;border-radius:8px;padding:14px 16px;margin:0 20px 24px;text-align:center;">',
           '  <p style="margin:0 0 6px;line-height:1.6;">',
           '    <span style="font-size:12px;color:#2C4A6B;font-weight:bold;border-bottom:3px solid #D9BE79;padding-bottom:2px;">情绪稳定 · 相互包容 · 互相分担</span>',
           '  </p>',
+          '</section>'
+        ].join('\n')
+      },
+      /* ---------- 赭石牛皮纸（财税）组件：财税栏目专用 ----------
+         尺寸严格照「科普那套」统一基准对齐（刊头 14/16、关注卡 24/20/22、重点句 22/20），
+         所以从别的栏目切过来时版面尺寸一点不动，只换颜色。
+         配色纪律与其它栏目一致：主句一色（赭石 #B45309）/ 底线一色（浅金 #F2C97D）/
+         浅底一色（米黄 #FDF6E9），次要信息用本栏目的灰褐 #A89685，不混别的颜色。 */
+      {
+        id: 'b-tax-keyhead', name: '财税刊头', desc: '白底赭石细边：赭石主句带浅金底线，适合算账 / 报税 / 社保这类实用文开头',
+        html: [
+          '<section style="background-color:#FFFFFF;border:1px solid #EFE0C6;border-radius:8px;padding:14px 16px;margin:0 20px 24px;text-align:center;">',
+          '  <p style="margin:0 0 6px;line-height:1.6;">',
+          '    <span style="font-size:12px;color:#B45309;font-weight:bold;border-bottom:3px solid #F2C97D;padding-bottom:2px;">先把这笔账算清，再动手</span>',
+          '  </p>',
+          '</section>'
+        ].join('\n')
+      },
+      {
+        id: 'b-tax-like', name: '财税点赞引导', desc: '上下细线夹住的居中赭石主句，克制不抢戏',
+        html: [
+          '<section style="margin:32px 0 20px;padding:12px 0;text-align:center;border-top:1px solid #EFE0C6;border-bottom:1px solid #EFE0C6;">',
+          '  <p style="font-size:14px;color:#B45309;font-weight:700;letter-spacing:1px;line-height:1.9;margin:0;">觉得有用，就点个「赞」和「推荐」<br>让更多老板少踩一个坑</p>',
+          '</section>'
+        ].join('\n')
+      },
+      {
+        id: 'b-tax-highlight', name: '财税重点句卡片', desc: '米黄底卡片：把全文最要紧的一句拎出来，深砖加粗居中',
+        html: [
+          '<section style="margin:28px 0;padding:22px 20px;background-color:#FDF6E9;border:1px solid #EFE0C6;border-radius:14px;text-align:center;">',
+          '  <p style="font-size:17px;color:#7C2D12;font-weight:700;line-height:1.9;margin:0;letter-spacing:1px;">把全文最要紧的一句放在这里</p>',
+          '</section>'
+        ].join('\n')
+      },
+      {
+        id: 'b-tax-follow', name: '财税关注卡片', desc: '米黄卡 + 赭石边框 + 二维码（保存过二维码就自动填好）',
+        html: [
+          '<section style="background-color:#FDF6E9;border:1px solid #EFE0C6;border-radius:8px;padding:24px 20px 22px;margin:24px 0 16px;text-align:center;">',
+          '  <p style="font-size:11px;color:#A89685;margin:0 0 18px;letter-spacing:1.5px;">算得清 · 说得明 · 跑得少</p>',
+          '  <section style="background-color:#FFFFFF;border:1px solid #FBE8C6;border-radius:8px;padding:10px;width:160px;margin:0 auto 10px;">',
+          '    <!-- ↓↓ 二维码位置：抽屉里保存过二维码就自动填好，否则点「把当前文章的二维码占位换成它」 ↓↓ -->',
+          '    <section style="height:140px;line-height:140px;font-size:12px;color:#C4A98A;letter-spacing:2px;">二维码图片放这里</section>',
+          '  </section>',
+          '  <p style="font-size:11px;color:#A89685;margin:0;letter-spacing:2px;">长按二维码 · 关注小田懂点账</p>',
           '</section>'
         ].join('\n')
       },
@@ -2976,7 +3313,7 @@
         ].join('\n')
       },
       {
-        id: 'b-like', name: '夜读点赞引导', desc: '上下细线夹住的居中深蓝主句 —— 尺寸与另两栏目完全一致',
+        id: 'b-like', name: '夜读点赞引导', desc: '上下细线夹住的居中深蓝主句 —— 尺寸与另四栏目完全一致',
         html: [
           '<section style="margin:32px 0 20px;padding:12px 0;text-align:center;border-top:1px solid #EFE3C8;border-bottom:1px solid #EFE3C8;">',
           '  <p style="font-size:14px;color:#2C4A6B;font-weight:700;letter-spacing:1px;line-height:1.9;margin:0;">点亮右下角的「赞」和「推荐」<br>让我知道，今夜有人一起</p>',
@@ -2985,7 +3322,7 @@
       },
       /* 关注卡顶部不再放「关注一字澄心」主句：底部提示「长按二维码 · 关注一字澄心」
          已有账号名，一张卡里写两遍重复；且「主句 + 主题色底线」是刊头的视觉语言，
-         一篇里出现两次会稀释重点。三个栏目同步删，口号升为卡片开场。
+         一篇里出现两次会稀释重点。四个栏目同步删，口号升为卡片开场。
          老稿里的默认主句由 syncCardsTo 的 UPGRADES 原样命中自动清掉（改过字的不碰）。 */
       {
         id: 'b-follow', name: '夜读关注卡片', desc: '暖米卡 + 浅金边 + 口号 + 二维码（保存过就自动填好）',
@@ -3009,7 +3346,7 @@
         ].join('\n')
       },
       {
-        id: 'b-hot-keyhead', name: '热搜刊头', desc: '白底浅橘边，一句热搜要点定调 —— 尺寸与另两栏目完全一致',
+        id: 'b-hot-keyhead', name: '热搜刊头', desc: '白底浅橘边，一句热搜要点定调 —— 尺寸与另四栏目完全一致',
         html: [
           '<section style="background-color:#FFFFFF;border:1px solid #F6DCC8;border-radius:8px;padding:14px 16px;margin:0 20px 24px;text-align:center;">',
           '  <p style="margin:0 0 6px;line-height:1.6;">',
@@ -3019,7 +3356,7 @@
         ].join('\n')
       },
       {
-        id: 'b-hot-like', name: '热搜点赞引导', desc: '上下细线夹住的居中砖红主句 —— 尺寸与另两栏目完全一致',
+        id: 'b-hot-like', name: '热搜点赞引导', desc: '上下细线夹住的居中砖红主句 —— 尺寸与另四栏目完全一致',
         html: [
           '<section style="margin:32px 0 20px;padding:12px 0;text-align:center;border-top:1px solid #F6DCC8;border-bottom:1px solid #F6DCC8;">',
           '  <p style="font-size:14px;color:#B8431F;font-weight:700;letter-spacing:1px;line-height:1.9;margin:0;">右下角的「赞」和「推荐」<br>是这篇热搜被更多人看到的机会</p>',
@@ -3040,7 +3377,7 @@
         ].join('\n')
       },
       {
-        id: 'b-hot-highlight', name: '热搜重点句卡片', desc: '暖橘底卡片：把一句最有冲击力的话单独拎出来（尺寸与另两栏目一致）',
+        id: 'b-hot-highlight', name: '热搜重点句卡片', desc: '暖橘底卡片：把一句最有冲击力的话单独拎出来（尺寸与另四栏目一致）',
         html: [
           '<section style="margin:28px 0;padding:22px 20px;background-color:#FFF4EC;border:1px solid #F6DCC8;border-radius:14px;text-align:center;">',
           '  <p style="font-size:17px;color:#B8431F;font-weight:700;line-height:1.9;margin:0;letter-spacing:1px;">把全文最戳人的那一句放在这里</p>',
@@ -3049,7 +3386,7 @@
       },
       /* ---------- 墨绿（知识科普风）组件：科普栏目专用 ----------
          取自参考版式：浅绿描边框 + 墨绿主句 + 黄色底线；正文强调走浅绿下划线而非底色。
-         【这套尺寸就是三个栏目的统一基准】—— 夜读 / 热搜的同名卡都按这里的
+         【这套尺寸就是四个栏目的统一基准】—— 夜读 / 热搜的同名卡都按这里的
          内边距、圆角、二维码框大小对齐，所以切栏目时版面尺寸不变，只有颜色换。 */
       {
         id: 'b-forest-keyhead', name: '墨绿刊头', desc: '墨绿细边框：墨绿主句带黄底线，适合知识 / 科普向开头',
@@ -3105,6 +3442,73 @@
           '  <p style="font-size:11px;color:#9CA3AF;margin:0;letter-spacing:2px;">长按二维码 · 关注一字澄心</p>',
           '</section>'
         ].join('\n')
+      },
+
+      /* ---------- 玫红金（文章带货）组件：带货栏目专用 ----------
+         尺寸照「科普那套」这个统一基准对齐（刊头 14/16、关注卡 24/20/22、重点句 22/20），
+         所以切到带货时版面尺寸一点不动，只换颜色。
+         配色纪律与其它栏目一致：主句一色（酒红 #8E244D）/ 底线一色（金 #E8C27A）/
+         浅底一色（浅粉 #FFF0F4），次要信息用本栏目的灰藕色，不混别的颜色。
+         另加两张带货专属卡：商品卡（名称 + 卖点 + 价格）、购买引导（深玫底白字）。
+         【这两张不注册进 CARD_MARKS】：它们是带货文里作者自己填的内容，
+         不参与「切栏目自动换皮」—— 切到夜读时你写的商品卡留在正文里，不会被换掉或删掉。 */
+      {
+        id: 'b-shop-keyhead', name: '带货刊头', desc: '白底浅粉边：酒红主句带金底线，适合好物推荐开头',
+        html: [
+          '<section style="background-color:#FFFFFF;border:1px solid #FBE0E6;border-radius:8px;padding:14px 16px;margin:0 20px 24px;text-align:center;">',
+          '  <p style="margin:0 0 6px;line-height:1.6;">',
+          '    <span style="font-size:12px;color:#8E244D;font-weight:bold;border-bottom:3px solid #E8C27A;padding-bottom:2px;">用过才敢推荐 · 买前先看这篇</span>',
+          '  </p>',
+          '</section>'
+        ].join('\n')
+      },
+      {
+        id: 'b-shop-like', name: '带货点赞引导', desc: '上下细线夹住的居中酒红主句 —— 尺寸与另四栏目完全一致',
+        html: [
+          '<section style="margin:32px 0 20px;padding:12px 0;text-align:center;border-top:1px solid #FBE0E6;border-bottom:1px solid #FBE0E6;">',
+          '  <p style="font-size:14px;color:#8E244D;font-weight:700;letter-spacing:1px;line-height:1.9;margin:0;">觉得这篇帮你避了坑<br>右下角的「赞」和「推荐」点一下</p>',
+          '</section>'
+        ].join('\n')
+      },
+      {
+        id: 'b-shop-follow', name: '带货关注卡片', desc: '浅粉卡 + 金边 + 口号 + 二维码（保存过就自动填好）',
+        html: [
+          '<section style="background-color:#FFF0F4;border:1px solid #FBE0E6;border-radius:8px;padding:24px 20px 22px;margin:24px 0 16px;text-align:center;">',
+          '  <p style="font-size:11px;color:#A3888F;margin:0 0 18px;letter-spacing:1.5px;">好物实测 · 只说人话 · 不踩坑</p>',
+          '  <section style="background-color:#FFFFFF;border:1px solid #FBEAEF;border-radius:8px;padding:10px;width:160px;margin:0 auto 10px;">',
+          '    <!-- ↓↓ 二维码位置：抽屉里保存过二维码就自动填好，否则点「把当前文章的二维码占位换成它」 ↓↓ -->',
+          '    <section style="height:140px;line-height:140px;font-size:12px;color:#D9B9C2;letter-spacing:2px;">二维码图片放这里</section>',
+          '  </section>',
+          '  <p style="font-size:11px;color:#B49AA2;margin:0;letter-spacing:2px;">长按二维码 · 关注一字澄心</p>',
+          '</section>'
+        ].join('\n')
+      },
+      {
+        id: 'b-shop-highlight', name: '带货重点句卡片', desc: '浅粉底卡片：把「为什么值这个价」那句单独拎出来',
+        html: [
+          '<section style="margin:28px 0;padding:22px 20px;background-color:#FFF0F4;border:1px solid #FBE0E6;border-radius:14px;text-align:center;">',
+          '  <p style="font-size:17px;color:#8E244D;font-weight:700;line-height:1.9;margin:0;letter-spacing:1px;">把最让人心动的一句放在这里</p>',
+          '</section>'
+        ].join('\n')
+      },
+      {
+        id: 'b-shop-goods', name: '带货商品卡', desc: '商品名 + 一句卖点 + 现价 / 原价 —— 带货文的主角，铺架构时已放在 03 后面',
+        html: [
+          '<section style="margin:26px 0;padding:18px 18px 16px;background-color:#FFF7FA;border:1px solid #FBE0E6;border-radius:14px;">',
+          '  <p style="margin:0 0 10px;font-size:12px;color:#8E244D;font-weight:700;letter-spacing:2px;">本期好物</p>',
+          '  <p style="margin:0 0 8px;font-size:17px;color:#4A3B41;font-weight:800;line-height:1.6;">商品名称写这里</p>',
+          '  <p style="margin:0 0 12px;font-size:14px;color:#6B4050;line-height:1.85;text-align:justify;">一句卖点：它解决了什么问题、和同类比强在哪。</p>',
+          '  <p style="margin:0;font-size:18px;color:#D6336C;font-weight:800;line-height:1.5;">¥ 00.0 <span style="font-size:12px;color:#A3888F;font-weight:400;text-decoration:line-through;">¥ 00.0</span></p>',
+          '</section>'
+        ].join('\n')
+      },
+      {
+        id: 'b-shop-cta', name: '带货购买引导', desc: '深玫底白字：一句「怎么买」收口，放在商品卡下面',
+        html: [
+          '<section style="margin:24px 0;padding:16px 18px;background-color:#8E244D;border-radius:12px;text-align:center;">',
+          '  <p style="margin:0;font-size:15px;color:#FFFFFF;font-weight:700;letter-spacing:1px;line-height:1.8;">长按下方卡片 · 直接下单<br><span style="font-size:12px;color:#F7D9E3;font-weight:400;letter-spacing:0.5px;">活动价到 X 月 X 日截止</span></p>',
+          '</section>'
+        ].join('\n')
       }
     ];
 
@@ -3127,8 +3531,8 @@
     }
 
     function renderFrags() {
-      /* 按栏目分组：夜读一组、热搜一组、墨绿一组、通用一组 */
-      var GORDER = ['夜读 · 米色深蓝金', '热搜 · 暖橘砖红', '墨绿 · 知识科普风', '通用'];
+      /* 按栏目分组：夜读一组、热搜一组、墨绿一组、带货一组、通用一组 */
+      var GORDER = ['夜读 · 米色深蓝金', '热搜 · 暖橘砖红', '墨绿 · 知识科普风', '带货 · 玫红酒红金', '通用'];
       var groups = {}, order = [];
       BUILTIN_FRAGS.forEach(function (f) {
         var g = FRAG_GROUP[f.id] || '通用';
@@ -3225,35 +3629,43 @@
       renderFrags();
     }
 
-    function openDrawer() { renderFrags(); buildSyms(); renderQRBox(); document.getElementById('drawer').classList.add('on'); }
+    function openDrawer() {
+      renderFrags(); buildSyms();
+      /* 打开抽屉时对准当前栏目：这个栏目有自己的二维码 → 直接选中它（多半是要改它）；
+         没有 → 选「通用」，改的是大家共用的那张。 */
+      var ch = channelOf(state.theme);
+      qrTarget = qrOwn(ch) ? ch : '';
+      renderQRBox();
+      document.getElementById('drawer').classList.add('on');
+    }
     function closeDrawer() { document.getElementById('drawer').classList.remove('on'); }
 
     /* ================================================================
        四·六、一键整篇骨架
        （刊头 → 引言 → 01/02/03 → 写到最后 → 点赞 → 关注卡）
        ================================================================ */
-    /* 三个栏目：夜读 / 热搜 / 科普。
-       三个栏目各自一个正文主题 id，草稿按主题 id 分槽存放 → 互不覆盖。
+    /* 四个栏目：夜读 / 热搜 / 科普 / 带货。
+       四个栏目各自一个正文主题 id，草稿按主题 id 分槽存放 → 互不覆盖。
        night = 夜读（正文主题「夜读深蓝」）
        hot   = 热搜（正文主题「落日橘光」）
        sci   = 科普（正文主题「墨绿科普」）
-       ——【三栏目版式一致、标题样式各一档】：
+       shop  = 带货（正文主题「带货玫金」）
+       ——【四栏目版式一致、标题样式各一档】：
        版式（结构 / 组件尺寸 / 行距 / 字号）完全一致，只有 h2 默认档位不同 ——
        夜读 'chapter' 章节条（刊物感）、热搜 'num' 序号（清单感、快节奏）、
        科普 'bar' 竖线（线条化、不抢戏）。
-       这么排是为了让三个栏目各自有一枚可识别的「标题指纹」：读者滑到一篇，
+       这么排是为了让四个栏目各自有一枚可识别的「标题指纹」：读者滑到一篇，
        不看文字也能认出是哪个号；同时避免三栏撞脸。
        骨架标题仍写成管道式（'## 01｜标题｜SECTION ONE'）—— 管道只定义字段，
        选章节条时出四件套（带英文小字），选其它档时自动降级成单行式「01 标题」。
        quote 统一 'line'（引言框），
        区别只在 theme（决定调色板）与 h2（标题档位）。
        骨架主体由 skeletonMD 按这份配置生成，不再有第二套分支。
-       【连占位文字也统一】：三个栏目的 lead / heads / tail 是同一串字，
+       【连占位文字也统一】：四个栏目的 lead / heads / tail 是同一串字，
        所以三个骨架除了卡片配色之外逐字相同 —— 切栏目时你不会看到版面或提示语换了个说法。
        栏目味由刊头那句关键词、关注卡的那句标语、以及配色来承担，不靠占位文字区分。 */
     var SKELETON_SET = {
       night: {
-        key: 'b-keyhead',
         like: 'b-like', follow: 'b-follow',
         lead: '引言：两三句话把主题带出来，让人想往下读。',
         theme: 'night', density: 'normal', h2: 'chapter', quote: 'line', label: '夜读版',
@@ -3261,7 +3673,6 @@
         tail: '## 写在最后｜FINAL THOUGHTS'
       },
       hot: {
-        key: 'b-hot-keyhead',
         like: 'b-hot-like', follow: 'b-hot-follow',
         lead: '引言：两三句话把主题带出来，让人想往下读。',
         theme: 'sunset', density: 'normal', h2: 'num', quote: 'line', label: '热搜版',
@@ -3269,22 +3680,53 @@
         tail: '## 写在最后｜FINAL THOUGHTS'
       },
       sci: {
-        key: 'b-forest-keyhead',
         like: 'b-forest-like', follow: 'b-forest-follow',
         lead: '引言：两三句话把主题带出来，让人想往下读。',
         theme: 'sci', density: 'normal', h2: 'bar', quote: 'line', label: '科普版',
         heads: ['## 01｜第一个小标题｜SECTION ONE', '## 02｜第二个小标题｜SECTION TWO', '## 03｜第三个小标题｜SECTION THREE'],
         tail: '## 写在最后｜FINAL THOUGHTS'
+      },
+      /* 带货：玫红金配色，标题档取 'block'（色块）—— 与夜读章节条 / 热搜序号 /
+         科普竖线都不撞脸，四个栏目各有一枚标题指纹。
+         它是四栏目里唯一带 mids 的：03 讲完价格后插「商品卡 + 购买引导」再进结语，
+         这是带货文固有的节奏（先说值不值 → 再给价格和下单入口）。
+         占位正文仍用与另三栏同一串字（正文…… / 总结升华……），
+         所以「这是架子不是稿」的识别照旧命中（见 isSkeletonLike）。 */
+      shop: {
+        like: 'b-shop-like', follow: 'b-shop-follow',
+        lead: '引言：两三句话把主题带出来，让人想往下读。',
+        theme: 'shop', density: 'normal', h2: 'block', quote: 'line', label: '带货版',
+        heads: ['## 01｜为什么值得买｜WHY IT WORTHS', '## 02｜用过才知道的几点｜WHAT I LOVED', '## 03｜价格与怎么买｜HOW TO BUY'],
+        tail: '## 写在最后｜FINAL THOUGHTS',
+        mids: ['b-shop-goods', 'b-shop-cta']
+      },
+      /* 财税：赭石牛皮纸配色，标题档取 'underline'（下划线）——
+         六个档位里唯一还没被占用的一个，正好也像旧账簿上的一道横线。
+         三段的骨架按财税文固有的节奏排：先讲清是什么 → 再点出坑在哪 → 最后给做法。
+         占位正文仍用与另四栏同一串字（正文…… / 总结升华……），
+         所以「这是架子不是稿」的识别照旧命中（见 isSkeletonLike）。 */
+      tax: {
+        like: 'b-tax-like', follow: 'b-tax-follow',
+        lead: '引言：两三句话把主题带出来，让人想往下读。',
+        theme: 'tax', density: 'normal', h2: 'underline', quote: 'line', label: '财税版',
+        heads: ['## 01｜这事到底怎么回事｜WHAT IT IS', '## 02｜坑在哪｜THE TRAP', '## 03｜怎么处理才对｜WHAT TO DO'],
+        tail: '## 写在最后｜FINAL THOUGHTS'
       }
     };
 
-    /* 【唯一的骨架生成函数】三个栏目走同一条路径，不再有第二套分支。
-       三栏目结构完全一致 —— 同一串结构，set.theme 决定调色板、set.h2 决定标题档位。
-       结构（自上而下）：刊头卡 → 引言框 → 01 → 金句 → 02 → 03 → 写到最后 → 点赞 → 关注卡。
+    /* 【唯一的骨架生成函数】四个栏目走同一条路径，不再有第二套分支。
+       结构完全一致 —— 同一串结构，set.theme 决定调色板、set.h2 决定标题档位；
+       唯一的可选项是 mids（栏目专属卡，目前只有带货用：03 之后插商品卡 + 购买引导）。
+       结构（自上而下）：引言框 → 01 → 金句 → 02 → 03 → [mids] → 写到最后 → 点赞 → 关注卡。
+       【刊头卡已从骨架里撤掉（2026-11-17）】五个栏目都不再自动铺这张卡 ——
+       公众号正文顶上本来就有大标题，再压一张「一句关键词定调」的白底卡，等于把标题说两遍，
+       而且它占着第一屏最贵的位置。骨架现在直接从引言开始。
+       set.key 这个字段仍然认（下面留着后手）：哪天想恢复，把 SKELETON_SET 里的 key 补回去就行，
+       卡片本身没删，抽屉里还找得到，想手动插随时插。
        组件分两路写：
          · 能用 Markdown 表达的（== 下划线强调、> 引言框、## 小标题）就用 Markdown ——
            编辑器里是干净可读的源码，改起来就是改文字，不会成片 HTML；
-         · 只有卡片（刊头 / 点赞 / 关注）用 :::html 片段。 */
+         · 只有卡片（点赞 / 关注 / 商品卡）用 :::html 片段。 */
     function skeletonMD(set) {
       set = set || SKELETON_SET.night;
       function frag(id) {
@@ -3293,9 +3735,12 @@
         return f ? ':::html\n' + f.html + '\n:::' : '';
       }
       var heads = set.heads || ['## 01 第一个小标题', '## 02 第二个小标题', '## 03 第三个小标题'];
-      return [
-        frag(set.key),
-        '',
+      var out = [];
+      /* 刊头卡：默认不铺（set.key 已从五个栏目里撤掉）。
+         留着这个分支是为了「补回 key 就能恢复」，空的时候不留空行。 */
+      var keyCard = set.key ? frag(set.key) : '';
+      if (keyCard) out.push(keyCard, '');
+      out.push(
         set.lead,
         '',
         heads[0],
@@ -3310,7 +3755,15 @@
         '',
         heads[2],
         '',
-        '正文……',
+        '正文……'
+      );
+      /* 栏目专属卡（mids）：插在 03 与「写到最后」之间 —— 带货就是这里的商品卡 + 购买引导。
+         其它栏目没有 mids，出来的骨架与原来逐字一致。 */
+      (set.mids || []).forEach(function (id) {
+        var f = frag(id);
+        if (f) out.push('', f);
+      });
+      out.push(
         '',
         set.tail || '## 写到最后',
         '',
@@ -3319,7 +3772,8 @@
         frag(set.like),
         '',
         frag(set.follow)
-      ].join('\n\n');
+      );
+      return out.join('\n\n');
     }
 
     /* 【铺骨架】只在「这个栏目还没写过」时调用：
@@ -3333,20 +3787,24 @@
     /* （旧版 CARD_SIGS 文字签名表已删：识别全靠 CARD_MARKS + CARD_LEGACY，
        这张表没有任何代码读它 —— 留着会让人误以为改这里的文字就能换卡。）
     /* 主题 → 本栏目的四张卡（刊头 / 点赞 / 关注 / 重点句卡）。
-       日落橘光=热搜，墨绿科普=科普，夜读深蓝=夜读。
-       【三个栏目都是这四张，一一对应】—— 换栏目时刊头换刊头、点赞换点赞、
+       日落橘光=热搜，墨绿科普=科普，夜读深蓝=夜读，带货玫金=带货。
+       【四个栏目都是这四张，一一对应】—— 换栏目时刊头换刊头、点赞换点赞、
        关注换关注、重点句换重点句，不会有哪张卡在某个栏目里找不到替代。
-       老草稿里可能残留 'forest'，一并归到科普那套卡。 */
+       老草稿里可能残留 'forest'，一并归到科普那套卡。
+       【带货专属的两张（商品卡 / 购买引导）不在组里】：那是作者自己填的内容，
+       切栏目时不参与换皮，留在正文里原样带过去（见 BUILTIN_FRAGS 里的说明）。 */
     function cardGroupOf(themeId) {
       if (themeId === 'sunset') return ['b-hot-keyhead', 'b-hot-like', 'b-hot-follow', 'b-hot-highlight'];
       if (themeId === 'sci' || themeId === 'forest') return ['b-forest-keyhead', 'b-forest-like', 'b-forest-follow', 'b-forest-highlight'];
+      if (themeId === 'shop') return ['b-shop-keyhead', 'b-shop-like', 'b-shop-follow', 'b-shop-highlight'];
+      if (themeId === 'tax') return ['b-tax-keyhead', 'b-tax-like', 'b-tax-follow', 'b-tax-highlight'];
       return ['b-keyhead', 'b-like', 'b-follow', 'b-night-highlight'];
     }
     /* 卡片识别：
        认「卡片自己的特征串」—— 每张卡都有全工具唯一的一小段样式（内边距 / 描边 / 颜色组合），
        这样即使你把卡里那句话改成自己的、颜色微调过，也照样认得出该换哪张。
        特征串必须成组命中（同一张卡内），不同卡之间互不交叉命中。
-       三个栏目的同款卡共用几何尺寸，靠颜色串区分（白底刊头靠主句颜色、点赞靠细线颜色）。 */
+       四个栏目的同款卡共用几何尺寸，靠颜色串区分（白底刊头靠主句颜色、点赞靠细线颜色）。 */
     var CARD_MARKS = {
       'b-keyhead': ['padding:14px 16px', 'background-color:#FFFFFF', 'color:#2C4A6B'],
       'b-like': ['margin:32px 0 20px', 'border-top:1px solid #EFE3C8'],
@@ -3359,7 +3817,20 @@
       'b-forest-keyhead': ['padding:14px 16px', 'background-color:#FFFFFF', 'color:#059669'],
       'b-forest-like': ['margin:32px 0 20px', 'border-top:1px solid #BBF7D0'],
       'b-forest-follow': ['padding:24px 20px 22px', 'background-color:#F0FDF4'],
-      'b-forest-highlight': ['padding:22px 20px', 'border:1px solid #BBF7D0']
+      'b-forest-highlight': ['padding:22px 20px', 'border:1px solid #BBF7D0'],
+      /* 带货：与其它栏目同款卡共用几何尺寸，靠颜色串区分
+         （刊头白底靠主句酒红、点赞靠细线浅粉、关注卡靠浅粉底）。 */
+      'b-shop-keyhead': ['padding:14px 16px', 'background-color:#FFFFFF', 'color:#8E244D'],
+      'b-shop-like': ['margin:32px 0 20px', 'border-top:1px solid #FBE0E6'],
+      'b-shop-follow': ['padding:24px 20px 22px', 'background-color:#FFF0F4'],
+      'b-shop-highlight': ['padding:22px 20px', 'border:1px solid #FBE0E6'],
+      /* 财税：同款卡共用几何尺寸，靠「赭石系」的颜色串区分
+         （刊头白底靠主句赭石、点赞靠细线米黄、关注卡靠米黄底 + 24 内边距、
+           重点句靠 22 内边距 + 米黄细边 —— 两组分得开，不会互相误认）。 */
+      'b-tax-keyhead': ['padding:14px 16px', 'background-color:#FFFFFF', 'color:#B45309'],
+      'b-tax-like': ['margin:32px 0 20px', 'border-top:1px solid #EFE0C6'],
+      'b-tax-follow': ['padding:24px 20px 22px', 'background-color:#FDF6E9'],
+      'b-tax-highlight': ['padding:22px 20px', 'border:1px solid #EFE0C6']
     };
     /* 「旧版卡片」特征串：统一尺寸之前铺出来的那批卡（大刊头 / 大字关注卡 / 无描边重点句）。
        老草稿、老骨架里的这些卡要被认出来，换成新版统一尺寸的那张 ——
@@ -3380,11 +3851,11 @@
       'b-forest-like': ['margin:32px 0 20px', 'border-top:1px solid #F3F4F6']
     };
     var CARD_KIND = {
-      'b-keyhead': 'keyhead', 'b-hot-keyhead': 'keyhead', 'b-forest-keyhead': 'keyhead',
-      'b-like': 'like', 'b-hot-like': 'like', 'b-forest-like': 'like',
-      'b-follow': 'follow', 'b-hot-follow': 'follow', 'b-forest-follow': 'follow',
+      'b-keyhead': 'keyhead', 'b-hot-keyhead': 'keyhead', 'b-forest-keyhead': 'keyhead', 'b-shop-keyhead': 'keyhead', 'b-tax-keyhead': 'keyhead',
+      'b-like': 'like', 'b-hot-like': 'like', 'b-forest-like': 'like', 'b-shop-like': 'like', 'b-tax-like': 'like',
+      'b-follow': 'follow', 'b-hot-follow': 'follow', 'b-forest-follow': 'follow', 'b-shop-follow': 'follow', 'b-tax-follow': 'follow',
       'b-night-highlight': 'highlight',
-      'b-hot-highlight': 'highlight', 'b-forest-highlight': 'highlight'
+      'b-hot-highlight': 'highlight', 'b-forest-highlight': 'highlight', 'b-shop-highlight': 'highlight', 'b-tax-highlight': 'highlight'
     };
     /* 一段 HTML 里是否含某张卡的全部特征串（都在同一个 :::html 块内） */
     function segHasMarks(seg, marks) {
@@ -3598,9 +4069,20 @@
       var box = document.getElementById('fmtRow');
       if (!box) return;
       box.innerHTML = FMTS.map(function (f, i) {
-        return '<button class="fmt-btn" title="' + f.title + '" style="' + f.css + '" ' +
+        return '<button class="fmt-btn" title="' + f.title + '" style="' + (f.css || '') + '" ' +
           'onmousedown="event.preventDefault()" onclick="fmtApply(' + i + ')">' + f.label + '</button>';
       }).join('') +
+        /* 图片 / 表格原来挂在编辑器标题栏，挪到这一排 —— 它们也是「往正文里放东西」的动作，
+           跟 B / I / U 是同一类，放一起少一处视线跳。
+           onmousedown 也 preventDefault：按钮不抢焦点，编辑区里的选区和光标原地不动，
+           插进来的图 / 表就落在你刚才那个位置。 */
+        '<span class="fmt-sep"></span>' +
+        '<button class="fmt-btn fmt-ico" title="选本地图片插到光标处（自动压成 1080px 宽的 JPEG，也可直接把图拖进编辑区）" ' +
+        'onmousedown="event.preventDefault()" onclick="document.getElementById(\'picFile\').click()">＋ 图片</button>' +
+        '<button class="fmt-btn fmt-ico" title="插一个 3 行 3 列的表格骨架，照着填" ' +
+        'onmousedown="event.preventDefault()" onclick="insertTable()">＋ 表格</button>' +
+        '<button class="fmt-btn fmt-ico" title="在光标处插一条分割线；线型（渐变 / 细线 / 短线 / 虚线 / 双线）在弹出面板里挑，整篇统一" ' +
+        'onmousedown="event.preventDefault()" onclick="openHrPop(this)">— 分割线</button>' +
         '<span class="fmt-hint">选中文字再点按钮，再点一下取消</span>';
     }
 
@@ -3690,21 +4172,50 @@
 
     /* ================================================================
        四·七、二维码槽位（存一次，每篇自动带上）
+       —— 每个栏目可以有自己的二维码
+       工具最早是一字澄心一个号用的，所以只有「一张二维码」。
+       现在财税栏目的号跟另外四个不一样，一张图不够用了：
+         · 通用槽  chengxin-qrcode           → 没单独设置过的栏目都走这一张
+         · 栏目槽  chengxin-qrcode-<栏目id>  → 给某个栏目单独存一张，优先用它
+       这样「夜读 / 热搜 / 科普 / 带货 共用一个号的二维码，财税单独一个号」就摆平了：
+       通用槽存一次，财税槽存一次，之后切栏目自动各用各的，不用每篇重贴。
        ================================================================ */
-    var QR_KEY = 'chengxin-qrcode';
+    var QR_KEY = 'chengxin-qrcode';              /* 通用槽 */
+    var QR_CH_KEY = 'chengxin-qrcode-';          /* 栏目槽前缀 */
+    var qrTarget = '';                           /* 抽屉里正在编的槽：'' = 通用，其余是栏目 id */
 
-    function getQR() {
-      try { return localStorage.getItem(QR_KEY) || ''; } catch (e) { return ''; }
+    function qrKeyOf(chId) { return chId ? QR_CH_KEY + chId : QR_KEY; }
+    function readQR(key) {
+      try { return localStorage.getItem(key) || ''; } catch (e) { return ''; }
     }
-    /* 关注卡片里二维码的统一 img 代码：卡片宽 168px - 内边距 20px = 148px，撑满即可 */
+    /* 只取这个槽自己的那张，不兜底（'' = 没存过） */
+    function qrOwn(chId) { return readQR(qrKeyOf(chId)); }
+    /* 这个栏目真正该用的那张：栏目槽有就用它，没有就用通用槽 */
+    function getQR(chId) {
+      var ch = chId || channelOf(state.theme);
+      return readQR(QR_CH_KEY + ch) || readQR(QR_KEY);
+    }
+    /* 抽屉里当前选中的槽自己的图（决定下面那个框显示什么） */
+    function qrTargetValue() { return readQR(qrKeyOf(qrTarget)); }
+    /* 栏目 id → 中文名（顶栏那排按钮的名字，同一串） */
+    function chanName(chId) {
+      for (var i = 0; i < CHANNELS.length; i++) { if (CHANNELS[i].id === chId) return CHANNELS[i].name; }
+      return chId;
+    }
+    /* 关注卡片里二维码的统一 img 代码：卡片宽 168px - 内边距 20px = 148px，撑满即可。
+       alt 里不放账号名 —— 两个号的二维码不一样，写死一个名字就错了。 */
     function imgTag(src) {
-      return '<img src="' + src + '" alt="一字澄心公众号二维码" style="display:block;width:100%;border-radius:6px;">';
+      return '<img src="' + src + '" alt="公众号二维码" style="display:block;width:100%;border-radius:6px;">';
     }
     function setQR(v) {
-      try { localStorage.setItem(QR_KEY, v); } catch (e) { toast('保存失败：本地存储可能已满'); return; }
+      var key = qrKeyOf(qrTarget);
+      try { localStorage.setItem(key, v); } catch (e) { toast('保存失败：本地存储可能已满'); return; }
       renderQRBox();
       renderFrags();
-      toast('二维码已保存 · 之后插入关注卡片会自动填好');
+      render();                                  /* 预览立刻换成新图，不用再点一次 */
+      toast(qrTarget
+        ? ('已存成「' + chanName(qrTarget) + '」专用二维码 · 切到这个栏目就用它，别的栏目不受影响')
+        : '通用二维码已保存 · 没单独设置过的栏目都用这一张');
     }
     /* ---------- 图片压缩：canvas 缩到 maxSide 以内，输出 PNG ----------
        二维码是黑白点阵，320px 足够扫码，PNG 压缩后只有几 KB，
@@ -3739,8 +4250,8 @@
 
     /* 旧版存的是原图 base64（可能几百 KB）：一键重压瘦身 */
     function recompressQR() {
-      var q = getQR();
-      if (!q) { toast('还没有保存二维码'); return; }
+      var q = qrTargetValue();
+      if (!q) { toast('当前选的这个槽还没有二维码'); return; }
       if (q.indexOf('data:image/') !== 0) { toast('当前二维码是图片地址，不需要压缩'); return; }
       var img = new Image();
       img.onload = function () {
@@ -3762,44 +4273,97 @@
       document.getElementById('qrUrl').value = '';
     }
     function clearQR() {
-      if (!getQR()) { toast('当前没有保存二维码'); return; }
-      if (!confirm('清除已保存的二维码？关注卡片会退回「二维码图片放这里」占位。')) return;
-      try { localStorage.removeItem(QR_KEY); } catch (e) { }
+      if (!qrTargetValue()) {
+        toast(qrTarget ? '「' + chanName(qrTarget) + '」本来就没单独存，用的是通用那张' : '当前没有保存二维码');
+        return;
+      }
+      var msg = qrTarget
+        ? ('清除「' + chanName(qrTarget) + '」的专用二维码？\n清掉后这个栏目会退回用通用那张（通用也没有就显示占位）。')
+        : '清除通用二维码？没单独设置过二维码的栏目会退回「二维码图片放这里」占位。';
+      if (!confirm(msg)) return;
+      try { localStorage.removeItem(qrKeyOf(qrTarget)); } catch (e) { }
       renderQRBox();
       renderFrags();
+      render();
       toast('已清除');
+    }
+    /* 抽屉里点某个槽（通用 / 某栏目）*/
+    function qrPick(chId) {
+      qrTarget = chId || '';
+      renderQRBox();
     }
     function renderQRBox() {
       var box = document.getElementById('qrBox');
       if (!box) return;
-      var q = getQR();
-      if (q) {
-        box.className = 'qr-box on';
-        box.innerHTML = '<img src="' + q + '" alt="已保存的二维码">' +
-          '<div class="qr-meta"><b>二维码已保存</b>' +
-          '<span><em>✓</em> 插入夜读 / 热搜关注卡片时自动填好，不用再贴</span><br>' +
-          '<span>' + (q.indexOf('data:image/') === 0 ? '本地图片（内嵌 base64）' : '图片地址') + ' · ' +
-          Math.round(q.length / 1024) + ' KB</span></div>';
-      } else {
-        box.className = 'qr-box';
-        box.innerHTML = '<div class="qr-ph">还没有<br>二维码</div>' +
-          '<div class="qr-meta"><b>还没有保存二维码</b>' +
-          '<span>保存一次，以后每篇关注卡片都自动带上</span></div>';
+      var curCh = channelOf(state.theme);        /* 正文当前在哪个栏目 */
+      /* 上面那排槽位按钮：通用 + 五个栏目，带绿勾 = 这个槽自己存过图 */
+      var tabs = document.getElementById('qrChans');
+      if (tabs) {
+        var list = [{ id: '', name: '通用', dot: '#b9b4c4' }].concat(CHANNELS);
+        tabs.innerHTML = list.map(function (c) {
+          var has = !!qrOwn(c.id);
+          var on = (qrTarget === (c.id || ''));
+          return '<button class="qr-tab' + (on ? ' on' : '') + '" onclick="qrPick(\'' + c.id + '\')" ' +
+            'title="' + (c.id
+              ? ('给「' + c.name + '」单独存一张' + (has ? '（已存）' : '（还没存，现在跟着通用那张）'))
+              : '五个栏目共用的那一张') + '">' +
+            '<i style="background:' + c.dot + '"></i>' + c.name + (has ? '<em>✓</em>' : '') + '</button>';
+        }).join('');
       }
+      var own = qrTargetValue();
+      var title, sub;
+      if (qrTarget) {
+        title = chanName(qrTarget) + (own ? ' · 专用二维码已保存' : ' · 还没单独设置');
+        sub = own
+          ? '<em>✓</em> 切到「' + chanName(qrTarget) + '」时，关注卡片自动用它，别的栏目不受影响'
+          : '现在跟着<b>通用</b>那张走' + (readQR(QR_KEY) ? '' : '（通用也还没存）') + ' —— 在下面选张图就归它专用';
+      } else if (own) {
+        title = '通用二维码已保存';
+        sub = '<em>✓</em> 没单独设置过的栏目都用这一张';
+      } else {
+        title = '还没有保存二维码';
+        sub = '保存一次，以后每篇关注卡片都自动带上';
+      }
+      /* 正文当前栏目实际在用哪张 —— 这一行是给「我明明存了怎么还是旧图」这类疑惑准备的 */
+      var viaOwn = !!readQR(QR_CH_KEY + curCh);
+      var via = viaOwn ? '专用' : (readQR(QR_KEY) ? '通用' : '还没设置');
+      var meta = '<span>' + sub + '</span><br>' +
+        '<span>正文现在在「' + chanName(curCh) + '」，用的是：<em>' + via + '</em>' +
+        (own ? ' · ' + (own.indexOf('data:image/') === 0 ? '本地图片（内嵌 base64）' : '图片地址') +
+          ' · ' + Math.round(own.length / 1024) + ' KB' : '') + '</span>';
+      box.className = own ? 'qr-box on' : 'qr-box';
+      box.innerHTML = (own
+        ? '<img src="' + own + '" alt="已保存的二维码">'
+        : '<div class="qr-ph">还没有<br>二维码</div>') +
+        '<div class="qr-meta"><b>' + title + '</b>' + meta + '</div>';
+      /* 按钮上写明要塞进哪个槽，免得手一滑存错地方 */
+      var saveBtn = document.getElementById('qrSaveBtn');
+      if (saveBtn) saveBtn.textContent = '选择图片，存到' + (qrTarget ? '「' + chanName(qrTarget) + '」' : '通用');
+      var applyBtn = document.getElementById('qrApplyBtn');
+      if (applyBtn) applyBtn.textContent = '把正文里的二维码换成「' + chanName(curCh) + '」的';
     }
-    /* 把当前编辑器里已有的占位换成二维码（用于旧稿 / 手动粘进来的卡片） */
+    /* 把当前文章里的二维码换成当前栏目该用的那张（旧稿 / 以前点过「换成它」的稿） */
     function applyQRToDoc() {
       var q = getQR();
-      if (!q) { toast('先保存二维码'); return; }
+      if (!q) { toast('当前栏目没有可用的二维码（先在抽屉里存一张）'); return; }
       var ed = document.getElementById('editor');
-      var hits = (ed.value.match(/<section[^>]*>\s*二维码图片放这里\s*<\/section>/g) || []).length;
-      if (!hits) { toast('正文里没有找到二维码占位（可能已经填过了）'); return; }
+      /* ① 还是占位的：换成真图
+         ② 已经填过真图的（图是工具塞进去的，alt 带「公众号二维码」）：把 src 换成本栏目该用的那张 ——
+            换过号、改过二维码之后不用手改 HTML */
+      var imgRe = /<img[^>]*alt="[^"]*公众号二维码"[^>]*>/g;
+      var n2 = 0;
+      var md = ed.value.replace(imgRe, function () { n2++; return imgTag(q); });
+      var phRe = /<section[^>]*>\s*二维码图片放这里\s*<\/section>/g;
+      var n1 = (md.match(phRe) || []).length;
+      md = md.replace(phRe, imgTag(q));
+      if (!n1 && !n2) { toast('正文里没有找到二维码占位（可能已经填过了）'); return; }
       var s = ed.selectionStart;
-      ed.value = ed.value.replace(/<section[^>]*>\s*二维码图片放这里\s*<\/section>/g, imgTag(q));
+      ed.value = md;
       ed.selectionStart = ed.selectionEnd = s;
       saveDraft();
       render();
-      toast('已替换 ' + hits + ' 处二维码');
+      toast('已替换 ' + (n1 + n2) + ' 处二维码 · 用的是「' + chanName(channelOf(state.theme)) + '」的'
+        + (readQR(QR_CH_KEY + channelOf(state.theme)) ? '专用图' : '通用图'));
     }
 
     /* ================================================================
@@ -3889,7 +4453,7 @@
       return true;
     }
     /* ---------- 「标题档位」老稿升级（h2v 标记） ----------
-       2026-09-24 起三个栏目各带一档默认标题样式（夜读 章节条 / 热搜 序号 / 科普 竖线）。
+       2026-09-24 起四个栏目各带一档默认标题样式（夜读 章节条 / 热搜 序号 / 科普 竖线）。
        草稿里是存着 h2 的，所以这一版之前写下的稿还揣着当年那个档（多半是章节条，
        更早还存过 'bar'）—— 切到热搜 / 科普时，标题的排法和栏目本身对不上。
        这里用 h2v 标记做【一次性升级】：没有 h2v 标记的稿 = 分栏默认档之前存的，
@@ -3971,7 +4535,7 @@
       s[id] = {
         md: md,
         scale: state.scale, width: state.width,
-        h2: state.h2, quote: state.quote, density: state.density,
+        h2: state.h2, quote: state.quote, density: state.density, hr: state.hr,
         h2v: H2_VER,          /* 这份稿的标题档是「分栏默认档」之后定的 → 照它自己的走，不再被升级改写 */
         at: Date.now()
       };
@@ -3993,6 +4557,7 @@
       state.h2 = (snap.h2v === H2_VER && snap.h2) ? snap.h2 : chanDefaultH2(state.theme);
       state.quote = snap.quote || 'line';
       state.density = snap.density || 'normal';
+      state.hr = snap.hr || 'grad';
       setWidth(snap.width || 'narrow');
     }
     function draftWhen(snap) {
@@ -4007,7 +4572,7 @@
        —— 那个栏目写过 → 把它的正文和样式原样摆回来（写过的一个字都不动），返回 'draft'；
        —— 槽里只有骨架（含老版本留下的架子）→ 返回 'skeleton'，交给 init 按最新版重铺；
        —— 什么都没有 → 返回 'empty'，同样交给 init 铺架构。
-       注意：不再「跳到别的栏目去找稿」。三个栏目打开都有完整架构，不存在空白页，
+       注意：不再「跳到别的栏目去找稿」。四个栏目打开都有完整架构，不存在空白页，
        所以不需要替你换栏目 —— 你上次停在哪，打开就还在哪。 */
     function restoreDraft() {
       var st = draftStore();
@@ -4061,13 +4626,21 @@
       try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; } catch (e) { return fallback; }
     }
     function exportConfig() {
+      /* 栏目专用二维码单独打包带走（qrByChan），通用那张仍放在 qr 字段里，
+         这样导入到老版本工具也还能认出通用二维码 */
+      var byChan = {};
+      CHANNELS.forEach(function (c) {
+        var v = readQR(QR_CH_KEY + c.id);
+        if (v) byChan[c.id] = v;
+      });
       var data = {
         app: CONFIG_APP,
-        version: 2,
+        version: 3,
         exportedAt: new Date().toISOString(),
         drafts: snapshotDraft(state.theme),   /* 各栏目草稿一起带走 */
         current: state.theme,
-        qr: getQR(),
+        qr: readQR(QR_KEY),
+        qrByChan: byChan,
         fragments: readLS(FRAG_KEY, [])
       };
       var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
@@ -4104,6 +4677,14 @@
           }
           if (typeof d.current === 'string') localStorage.setItem(LAST_THEME, d.current);
           if (typeof d.qr === 'string') localStorage.setItem(QR_KEY, d.qr);
+          /* 栏目专用二维码：有就写，没有就把旧的那张清掉，避免导进来一套半新半旧的 */
+          if (d.qrByChan && typeof d.qrByChan === 'object') {
+            CHANNELS.forEach(function (c) {
+              var v = d.qrByChan[c.id];
+              if (typeof v === 'string' && v) localStorage.setItem(QR_CH_KEY + c.id, v);
+              else localStorage.removeItem(QR_CH_KEY + c.id);
+            });
+          }
           if (d.fragments) localStorage.setItem(FRAG_KEY, JSON.stringify(d.fragments));
         } catch (err) { toast('写入失败：本地存储可能已满'); return; }
         restoreDraft();
@@ -4139,6 +4720,197 @@
         }
       }
     });
+
+    /* ================================================================
+       插图 / 插表格：两个按钮 + 拖拽
+       —— 原来只有「Ctrl+V 粘贴」一条路，想用一张硬盘里的图还得先去别的软件里复制。
+       现在直接选文件（可多选）或把图拖进编辑区，自动压缩后插到光标处。
+       为什么压成 JPEG 不存 PNG：草稿是存进 localStorage 的（上限约 5MB），
+       1080 宽的照片存 PNG 动辄 2MB，两三张就爆仓、草稿静默存不上；
+       同尺寸 JPEG 只要 150–300KB，能放十几张。
+       压之前先铺一层白底 —— 透明底的 PNG（截图、logo）直接转 JPEG 会变成黑块。
+       ================================================================ */
+    var PIC_MAX = 1080, PIC_Q = 0.82;
+
+    function compressToJpeg(file, maxSide, quality, ok, fail) {
+      var img = new Image();
+      var url = URL.createObjectURL(file);
+      img.onload = function () {
+        var sc = Math.min(1, maxSide / Math.max(img.width, img.height));
+        var c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.width * sc));
+        c.height = Math.max(1, Math.round(img.height * sc));
+        var g = c.getContext('2d');
+        g.fillStyle = '#FFFFFF';
+        g.fillRect(0, 0, c.width, c.height);
+        g.drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        ok(c.toDataURL('image/jpeg', quality), c.width, c.height);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); fail && fail(); };
+      img.src = url;
+    }
+
+    /* 把一段源码插到光标处（有选中就顶掉选中），插完光标落在后面，顺手重渲染 */
+    function insertAtCursor(text) {
+      var el = document.getElementById('editor');
+      var s = el.selectionStart, e2 = el.selectionEnd;
+      var pre = el.value.slice(0, s);
+      var needBr = pre && !/\n\n$/.test(pre) ? '\n\n' : '';
+      var ins = needBr + text + '\n\n';
+      el.value = pre + ins + el.value.slice(e2);
+      var caret = s + ins.length;
+      el.selectionStart = el.selectionEnd = caret;
+      render();
+      el.focus();
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function insertPics(e) {
+      var files = Array.prototype.slice.call((e && e.target && e.target.files) || []);
+      if (!files.length) return;
+      var okN = 0, skip = 0;
+      files.forEach(function (f) {
+        if (!/^image\//.test(f.type || '')) { skip++; return; }
+        if (f.size > 12 * 1024 * 1024) { skip++; return; }
+        var name = (f.name || '图片').replace(/\.\w+$/, '');
+        compressToJpeg(f, PIC_MAX, PIC_Q, function (dataUrl) {
+          insertAtCursor('![' + name + '](' + dataUrl + ')');
+          okN++;
+        }, function () { skip++; });
+      });
+      if (e && e.target && 'value' in e.target) e.target.value = '';
+      setTimeout(function () {
+        if (okN) {
+          toast('已插入 ' + okN + ' 张图' + (skip ? '，' + skip + ' 张读不了/太大已跳过' : '') +
+            ' · 复制到公众号时微信会自动上传');
+        } else if (skip) {
+          toast('这些文件读不出来，或者超过 12MB，换一张试试');
+        }
+      }, 900);
+    }
+
+    function insertTable() {
+      insertAtCursor([
+        '| 项目 | 怎么算 | 要注意什么 |',
+        '| --- | --- | --- |',
+        '|  |  |  |',
+        '|  |  |  |'
+      ].join('\n'));
+      toast('表格已插入 · 第一行是表头，横线下面照着填');
+    }
+
+    /* ================================================================
+       分割线
+       —— 正文里始终只写一行 ---（Markdown 原生写法，*** / ___ 也认），
+          线型放在这里选，整篇统一。为什么不给每条线单独存样式：
+          同一篇文章里出现三种线，读者只觉得乱；线型是「这篇的调子」，
+          跟标题档、引用档一样属于全局设置。
+       ================================================================ */
+    var HR_STYLES = [
+      { id: 'grad', name: '渐变', tip: '左浓右淡，默认那一款' },
+      { id: 'line', name: '细线', tip: '一条通栏细线，最不抢戏' },
+      { id: 'short', name: '短线', tip: '居中一小截，章节感强' },
+      { id: 'dash', name: '虚线', tip: '轻一点，适合夹在正文里' },
+      { id: 'double', name: '双线', tip: '上下两条细线，郑重的老派感' }
+    ];
+    var hrBtnRef = null;
+
+    /* 面板里那条预览线：用当前栏目的真实颜色画，选之前先看到长什么样 */
+    function hrDemoStyle(id) {
+      var t = THEMES.filter(function (x) { return x.id === state.theme; })[0] || THEMES[0];
+      var p = t.palette;
+      if (id === 'line') return 'height:1px;background:' + p.line + ';';
+      if (id === 'short') return 'height:2px;width:44px;background:' + p.main + ';border-radius:2px;';
+      if (id === 'dash') return 'height:0;border-top:1px dashed ' + p.line + ';';
+      if (id === 'double') return 'height:4px;border-top:1px solid ' + p.line + ';border-bottom:1px solid ' + p.line + ';';
+      return 'height:3px;background:linear-gradient(90deg,' + p.main + ',' + p.hl + ' 55%,rgba(255,255,255,0));border-radius:3px;';
+    }
+
+    function hrPopHTML() {
+      return '<div class="hr-pop-t">线型整篇统一 · 正文里就是一行 <code>---</code></div>' +
+        HR_STYLES.map(function (s) {
+          return '<button class="hr-opt' + (state.hr === s.id ? ' on' : '') + '" ' +
+            'onclick="pickHr(\'' + s.id + '\')" title="' + s.tip + '">' +
+            '<span class="hr-demo"><i style="' + hrDemoStyle(s.id) + '"></i></span>' +
+            '<span class="hr-name">' + s.name + '</span></button>';
+        }).join('') +
+        '<button class="hr-insert" onclick="insertDivider()">在光标处插一条</button>';
+    }
+
+    function openHrPop(btn) {
+      var pop = document.getElementById('hrPop');
+      if (!pop) return;
+      /* 再点一次按钮 = 收起 */
+      if (pop.classList.contains('on') && hrBtnRef === btn) { pop.classList.remove('on'); return; }
+      hrBtnRef = btn;
+      pop.innerHTML = hrPopHTML();
+      /* 贴在这个按钮正下方 —— 按钮在工具条第几行都能对上；
+         右边放不下就往回收，别糊出编辑区 */
+      var pane = btn.closest('.pane') || btn.parentNode;
+      var pr = pane.getBoundingClientRect(), br = btn.getBoundingClientRect();
+      var left = Math.round(br.left - pr.left);
+      left = Math.max(10, Math.min(left, pr.width - 246));
+      pop.style.left = left + 'px';
+      pop.style.top = Math.round(br.bottom - pr.top + 6) + 'px';
+      pop.classList.add('on');
+    }
+
+    function pickHr(id) {
+      state.hr = id;
+      render();                                   /* 预览立刻换线型 */
+      var pop = document.getElementById('hrPop');
+      if (pop && pop.classList.contains('on')) pop.innerHTML = hrPopHTML();  /* 只更内容，不挪位置 */
+    }
+
+    /* 把 --- 插到光标处：前后各留一个空行，保证它独占一段（否则会粘到上一段的行尾） */
+    function insertDivider() {
+      var el = document.getElementById('editor');
+      var s = el.selectionStart, e = el.selectionEnd;
+      var before = el.value.slice(0, s), after = el.value.slice(e);
+      var pre = /(^|\n)\s*$/.test(before) ? '' : '\n\n';
+      var post = /^\s*(\n|$)/.test(after) ? '' : '\n\n';
+      var ins = pre + '---' + post;
+      el.value = before + ins + after;
+      el.selectionStart = el.selectionEnd = s + ins.length;
+      var pop = document.getElementById('hrPop');
+      if (pop) pop.classList.remove('on');
+      render();
+      el.focus();
+      var name = (HR_STYLES.filter(function (x) { return x.id === state.hr; })[0] || {}).name || '渐变';
+      toast('已插入分割线 · 当前线型：' + name);
+    }
+
+    /* 点面板外面就收起（点按钮本身不算，按钮自己管开合） */
+    document.addEventListener('click', function (e) {
+      var pop = document.getElementById('hrPop');
+      if (!pop || !pop.classList.contains('on')) return;
+      if (pop.contains(e.target)) return;
+      if (hrBtnRef && hrBtnRef.contains(e.target)) return;
+      pop.classList.remove('on');
+    });
+
+    /* 图片直接拖进编辑区也能插（拖到别的栏目再拖回来很常见，别让它变成浏览器打开图片） */
+    (function () {
+      var el = document.getElementById('editor');
+      if (!el) return;
+      function hasFiles(dt) {
+        if (!dt) return false;
+        var t = dt.types || [];
+        for (var i = 0; i < t.length; i++) if (t[i] === 'Files') return true;
+        return false;
+      }
+      el.addEventListener('dragover', function (e) {
+        if (hasFiles(e.dataTransfer)) { e.preventDefault(); el.style.outline = '2px dashed #7C5CFF'; }
+      });
+      el.addEventListener('dragleave', function () { el.style.outline = ''; });
+      el.addEventListener('drop', function (e) {
+        el.style.outline = '';
+        if (!hasFiles(e.dataTransfer)) return;
+        e.preventDefault();
+        insertPics({ target: { files: e.dataTransfer.files } });
+      });
+    })();
 
     document.getElementById('editor').addEventListener('input', render);
 
